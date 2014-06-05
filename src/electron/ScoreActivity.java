@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 
 public class ScoreActivity extends Activity 
 {
@@ -42,7 +41,7 @@ public class ScoreActivity extends Activity
 		switch (item.getItemId()) 
 		{
 		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
+		//	NavUtils.navigateUpFromSameTask(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
