@@ -34,10 +34,7 @@ final class Ball implements Runnable
 
 	private boolean checkCollision(Point object) // ball collision detection
 	{
-		if (((object.x <= getPosition().x + gameactivity.getBallSize() - 1) && (object.x >= getPosition().x - gameactivity.getBallSize() - 1) && ((object.y <= getPosition().y + gameactivity.getBallSize() - 1) && (object.y >= getPosition().y - gameactivity.getBallSize() - 1))))
-			return true;
-		else
-			return false;
+		return (((object.x <= getPosition().x + gameactivity.getBallSize() - 1) && (object.x >= getPosition().x - gameactivity.getBallSize() - 1) && ((object.y <= getPosition().y + gameactivity.getBallSize() - 1) && (object.y >= getPosition().y - gameactivity.getBallSize() - 1))));
 	}
 
 	public void setx() // random x start
@@ -56,16 +53,10 @@ final class Ball implements Runnable
 	public void randomizeStart() // randomize startup
 	{
 		int number = rnd.nextInt(3);
-		if (number > 1)
-			goingleft = true;
-		else
-			goingleft = false;
+		goingleft =  (number > 1);
 
 		number = rnd.nextInt(3);
-		if (number > 1)
-			bump = true;
-		else
-			bump = false;
+		bump =  (number > 1);
 
 		setx();
 		sety();
@@ -97,10 +88,7 @@ final class Ball implements Runnable
 							hits++;
 							gameactivity.getShockwave().add(new Shockwave(position, 0));
 
-							if (player[playercounter].isRight())
-								goingleft = true;
-							else
-								goingleft = false; // player.right toggle
+							goingleft =  (player[playercounter].isRight());
 
 							if (playercounter == 0)
 							{
@@ -110,9 +98,10 @@ final class Ball implements Runnable
 								if ((gameactivity.getGameScore() % 20 == 0) && (gameactivity.getBallCount() < 0))
 								{
 									ball.add(new Ball(gameactivity, ball, player));
-									ball.get(ball.size() - 1).randomizeStart();
-									ball.get(ball.size() - 1).start();
-									ball.get(ball.size() - 1).spawnwave = 5;
+                                    Ball latestball = ball.get(ball.size() - 1);
+                                    latestball.randomizeStart();
+                                    latestball.start();
+                                    latestball.spawnwave = 5;
 									GameActivity.getSoundManager().playSound(8, 1);
 								}
 							}
@@ -152,25 +141,26 @@ final class Ball implements Runnable
 
 				for (int ballcounter = 0; ballcounter < ball.size(); ballcounter++) // ball to ball collision detection
 				{
-					if ((this != ball.get(ballcounter)) && (!collided)) // if ball is not compared to itself and has not yet collided
+                    Ball currentball = ball.get(ballcounter);
+					if ((this != currentball) && (!collided)) // if ball is not compared to itself and has not yet collided
 					{
-						if (checkCollision(ball.get(ballcounter).getPosition())) // ball collision detected
+						if (checkCollision(currentball.getPosition())) // ball collision detected
 						{
 							new_angle = rnd.nextInt(speed);
 							angle = new_angle;
 
 							GameActivity.getSoundManager().playSound(6, 1);
-							if ((goingleft) && (!ball.get(ballcounter).goingleft)) 
+							if ((goingleft) && (!currentball.goingleft))
 							{
 								goingleft = false;
-								ball.get(ballcounter).goingleft = true;
+                                currentball.goingleft = true;
 							}
 							else 
 							{
 								goingleft = true;
-								ball.get(ballcounter).goingleft = false;
+                                currentball.goingleft = false;
 							}
-							ball.get(ballcounter).collided = true;
+                            currentball.collided = true;
 						}
 					}
 				}
@@ -333,19 +323,9 @@ final class Ball implements Runnable
 		return bump;
 	}
 
-	public void setBump(boolean bump) 
-	{
-		this.bump = bump;
-	}
-
 	public Point getPosition() 
 	{
 		return position;
-	}
-
-	public void setPosition(Point position) 
-	{
-		this.position = position;
 	}
 
 	public boolean isSleeping() 

@@ -35,19 +35,9 @@ final class Popup
 		return textindex;
 	}
 
-	public void setTextIndex(int textindex) 
+	public int getlife()
 	{
-		this.textindex = textindex;
-	}
-
-	public int getCounter() 
-	{
-		return counter;
-	}
-
-	public void setCounter(int counter) 
-	{
-		this.counter = counter;
+		return counter--;
 	}
 
 	public int getType() 
@@ -63,10 +53,5 @@ final class Popup
 	public Point getPosition() 
 	{
 		return position;
-	}
-
-	public void setPosition(Point position) 
-	{
-		this.position = position;
 	}
 }

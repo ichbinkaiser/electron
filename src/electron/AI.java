@@ -138,10 +138,10 @@ final class AI implements Runnable
 				}
 			}
 
-			for (int i = 0; i < ball.size(); i++)
+			for (int ballcounter = 0; ballcounter < ball.size(); ballcounter++)
 			{
-				if (!ball.get(i).isSleeping())
-					targetLogic(ball.get(i)); // send to AI targeting logic current ball location
+				if (!ball.get(ballcounter).isSleeping())
+					targetLogic(ball.get(ballcounter)); // send to AI targeting logic current ball location
 			}
 
 			if ((position.x < target.x) && (position.x <= guardboxright)) // AI move right
@@ -194,16 +194,6 @@ final class AI implements Runnable
 		}
 	}
 
-	public Point getPosition() 
-	{
-		return position;
-	}
-
-	public void setPosition(Point position) 
-	{
-		this.position = position;
-	}
-
 	public void setGuardBoxTop(int guardboxtop) 
 	{
 		this.guardboxtop = guardboxtop;
@@ -222,11 +212,6 @@ final class AI implements Runnable
 	public void setGuardBoxRight(int guardboxright) 
 	{
 		this.guardboxright = guardboxright;
-	}
-
-	public boolean isFriend() 
-	{
-		return friend;
 	}
 
 	public void setFriend(boolean isfriend) 
