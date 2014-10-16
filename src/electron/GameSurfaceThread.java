@@ -7,10 +7,10 @@ import electron.GameActivity.MyDraw;
 
 final class GameSurfaceThread extends Thread 
 {
-	private GameActivity gameactivity;
-	private boolean flag; // game is running
-	private SurfaceHolder myholder;
-	private MyDraw mydraw;
+	GameActivity gameactivity;
+	boolean running = true; // game is running
+	SurfaceHolder myholder;
+	MyDraw mydraw;
 	
 	public GameSurfaceThread(GameActivity gameactivity, SurfaceHolder holder , MyDraw drawmain)
 	{
@@ -20,27 +20,25 @@ final class GameSurfaceThread extends Thread
 		mydraw = drawmain;
 	}
 
-	public void setFlag (boolean myFlag)
-	{
-		flag = myFlag;
-	}
 	public void run()
 	{
 		Canvas canvas = null;
-		while(flag)
+		while(running)
 		{
 			try
 			{
 				canvas = myholder.lockCanvas(null);
 				mydraw.onDraw(canvas);
 			}
+
 			catch (NullPointerException e)
 			{
 				Log.e(this.gameactivity.getLocalClassName(), e.toString());
 			}
+
 			finally
 			{
-				if(canvas != null)
+				if (canvas != null)
 					myholder.unlockCanvasAndPost(canvas);
 			}
 		}

@@ -4,9 +4,9 @@ import android.graphics.Point;
 
 final class Trail 
 {
-	private Point startpoint = new Point(); //start point
-	private Point endpoint = new Point(); //end point
-	private int counter = 10; // animation index
+	Point startpoint = new Point(); //start point
+	Point endpoint = new Point(); //end point
+	int life = 10; // animation index
 	
 	Trail(Point startpoint, Point endpoint)
 	{
@@ -16,60 +16,24 @@ final class Trail
 		this.endpoint.y = endpoint.y;
 	}
 	
-	int calcSize()
+	int calcSize() // calculate trailer size
 	{
-		switch (getCounter())
+		switch (life)
 		{
-		case 9:
-			return 1;
-		case 8:
-			return 1;
-		case 7:
-			return 1;
-		case 6:
-			return 2;
-		case 5:
-			return 2;
-		case 4:
-			return 2;
-		case 3:
-			return 3;
-		case 2:
-			return 3;
-		case 1:
-			return 3;
-		default:
-			return 0;
+            case 9:
+            case 8:
+            case 7:
+                return 1;
+            case 6:
+            case 5:
+            case 4:
+                return 2;
+            case 3:
+            case 2:
+            case 1:
+                return 3;
+            default:
+                return 0;
 		}
-	}
-	
-	public int getCounter() 
-	{
-		return counter;
-	}
-
-	public void setCounter(int counter) 
-	{
-		this.counter = counter;
-	}
-
-	public Point getStartPoint() 
-	{
-		return startpoint;
-	}
-
-	public void setStartPoint(Point startpoint) 
-	{
-		this.startpoint = startpoint;
-	}
-
-	public Point getEndPoint() 
-	{
-		return endpoint;
-	}
-
-	public void setEndPoint(Point endpoint) 
-	{
-		this.endpoint = endpoint;
 	}
 }

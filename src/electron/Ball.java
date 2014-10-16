@@ -7,59 +7,52 @@ import android.util.Log;
 
 final class Ball implements Runnable
 {
-	private GameActivity gameactivity;
-	private ArrayList<Ball> ball = new ArrayList<Ball>();
-	private Player[] player;
+	GameActivity gameactivity;
+	ArrayList<Ball> ball = new ArrayList<Ball>();
+	Player[] player;
 	
-	private int hits = 0;
-	private Point position = new Point();
-	private Point pposition = new Point(); // previous position
-	private Random rnd = new Random();
-	private int speed = 5;
-	private boolean bump; // is hit by player
-	private boolean goingleft; // is going left
-	private boolean collided; // has collided
-	private int angle = rnd.nextInt(5); // angle of ball bounce
-	private boolean supermode = false; // ball in super mode
-	private boolean sleeping = false; // is thread sleeping
-	private int speedbonusx = 0, speedbonusy = 0;
-	private int spawnwave = 0;
+	int hits = 0, speed = 5;
+	Point position = new Point();
+	Point pposition = new Point(); // previous position
+	Random rnd = new Random();
 
-	Ball(GameActivity gameactivity, ArrayList<Ball> ball, Player[] player) 
+	boolean bump; // is hit by player
+	boolean goingleft; // is going left
+	boolean collided; // has collided
+    boolean supermode = false; // ball in super mode
+    boolean alive = true; //
+
+	int angle = rnd.nextInt(5); // angle of ball bounce
+	int speedbonusx = 0, speedbonusy = 0;
+	int spawnwave = 0;
+
+	Ball(GameActivity gameactivity, ArrayList<Ball> ball, Player[] player, boolean newBall)
 	{
 		this.gameactivity = gameactivity;
 		this.ball = ball;
 		this.player = player;
+
+        goingleft = rnd.nextBoolean();
+        bump = rnd.nextBoolean();
+
+        position.x = rnd.nextInt(gameactivity.canvaswidth);
+
+        if (!bump)
+            position.y = rnd.nextInt(150) + 5;
+        else
+            position.y = rnd.nextInt(150) + gameactivity.canvasheight - 150;
+
+        if (newBall)
+        {
+            spawnwave = 5;
+            GameActivity.soundmanager.playSound(8, 1);
+        }
+        start();
 	}
 
-	private boolean checkCollision(Point object) // ball collision detection
+	boolean checkCollision(Point object) // ball collision detection
 	{
-		return (((object.x <= getPosition().x + gameactivity.getBallSize() - 1) && (object.x >= getPosition().x - gameactivity.getBallSize() - 1) && ((object.y <= getPosition().y + gameactivity.getBallSize() - 1) && (object.y >= getPosition().y - gameactivity.getBallSize() - 1))));
-	}
-
-	public void setx() // random x start
-	{
-		position.x = rnd.nextInt(gameactivity.getCanvasWidth());
-	}
-
-	public void sety() // random y start
-	{
-		if (!isBump())
-			position.y = rnd.nextInt(150) + 5;
-		else
-			position.y = rnd.nextInt(150) + gameactivity.getCanvasHeight() - 150;
-	}
-
-	public void randomizeStart() // randomize startup
-	{
-		int number = rnd.nextInt(3);
-		goingleft =  (number > 1);
-
-		number = rnd.nextInt(3);
-		bump =  (number > 1);
-
-		setx();
-		sety();
+		return (((object.x <= position.x + gameactivity.ballsize - 1) && (object.x >= position.x - gameactivity.ballsize - 1) && ((object.y <= position.y + gameactivity.ballsize - 1) && (object.y >= position.y - gameactivity.ballsize - 1))));
 	}
 
 	public void start()
@@ -71,104 +64,92 @@ final class Ball implements Runnable
 
 	public void run()
 	{
-		int new_angle;
-		while(gameactivity.isRunning())
+		while(gameactivity.running && alive)
 		{
-			if (!sleeping)
+            ////////////////////////////////////// BALL TO PLAYER COLLISION DETECTION ////////////////////////////////
+
+			for (int playercounter = 0; playercounter < player.length; playercounter++)
 			{
-				for (int playercounter = 0; playercounter < player.length; playercounter++) // player collision logic
+				if ((playercounter == 0) || (playercounter == 3)) // bottom player
 				{
-					if ((playercounter == 0) || (playercounter == 3))
+					if ((position.y >= player[playercounter].position.y) && (position.y <= player[playercounter].position.y + gameactivity.pongheight) && (position.x >= player[playercounter].position.x) && (position.x <= player[playercounter].position.x + gameactivity.pongwidth) && (!bump)) // bottom player to ball collision detection
 					{
-						if ((position.y >= player[playercounter].getPosition().y) && (position.y <= player[playercounter].getPosition().y + gameactivity.getPongHeight()) && (position.x >= player[playercounter].getPosition().x) && (position.x <= player[playercounter].getPosition().x + gameactivity.getPongWidth()) && (!bump)) // bottom player to ball collision detection
+						angle = rnd.nextInt(speed);
+						bump = true;
+						hits++;
+						gameactivity.shockwave.add(new Shockwave(position, Shockwave.EXTRA_SMALL_WAVE));
+
+						goingleft =  (player[playercounter].goingRight);
+
+						if (playercounter == 0)
 						{
-							new_angle = rnd.nextInt(speed);
-							angle = new_angle;
-							bump = true;
-							hits++;
-							gameactivity.getShockwave().add(new Shockwave(position, 0));
+							gameactivity.gamescore =+ (1 + speed / 11);
+							gameactivity.doShake(40);
 
-							goingleft =  (player[playercounter].isRight());
-
-							if (playercounter == 0)
+							if ((gameactivity.gamescore % 20 == 0) && (gameactivity.ballcount < 0))
 							{
-								gameactivity.setGameScore(gameactivity.getGameScore() + (1 + speed / 11));
-								gameactivity.doShake(40);
+								ball.add(new Ball(gameactivity, ball, player, true));
 
-								if ((gameactivity.getGameScore() % 20 == 0) && (gameactivity.getBallCount() < 0))
-								{
-									ball.add(new Ball(gameactivity, ball, player));
-                                    Ball latestball = ball.get(ball.size() - 1);
-                                    latestball.randomizeStart();
-                                    latestball.start();
-                                    latestball.spawnwave = 5;
-									GameActivity.getSoundManager().playSound(8, 1);
-								}
 							}
-							GameActivity.getSoundManager().playSound(1, 1);
-
-							gameactivity.setHitCounter(gameactivity.getHitCounter() + 1);
-
-							if ((hits > 0) && (hits % 3 == 0)) speed += 3; // increase ball speed for ever three hits
-
-							if (speedbonusx < player[playercounter].getSpeedX() / 10)
-								speedbonusx = player[playercounter].getSpeedX() / 20; // get ball speed bonus from directional velocity of player
-							
-							if (speedbonusy < player[playercounter].getSpeedY() / 10)
-								speedbonusy = player[playercounter].getSpeedY() / 20;
-
-							if (gameactivity.isSoloGame())
-								gameactivity.getPopup().add(new Popup(position, 2)); // popup text in score++ in solo mode
 						}
-					}
-					else
-					{
-						if ((position.y >= player[playercounter].getPosition().y) && (position.y <= player[playercounter].getPosition().y + gameactivity.getPongHeight()) && (position.x >= player[playercounter].getPosition().x) && (position.x <= player[playercounter].getPosition().x + gameactivity.getPongWidth()) && (bump == true)) // top player to ball collision detection
-						{
-							new_angle = rnd.nextInt(speed);
-							angle = new_angle;
-							bump = false;
-							hits++;
+						GameActivity.soundmanager.playSound(1, 1);
 
-							gameactivity.getShockwave().add(new Shockwave(position,0));
-							GameActivity.getSoundManager().playSound(1, 1);
+						gameactivity.hitcounter++;
 
-							if ((hits > 0) && (hits % 3 == 0))
-								speed += 3;
-						}
+						if ((hits > 0) && (hits % 3 == 0)) speed += 3; // increase ball speed for ever three hits
+
+						if (speedbonusx < player[playercounter].speedX / 10)
+							speedbonusx = (player[playercounter].speedX / 20); // get ball speed bonus from directional velocity of player
+
+						if (speedbonusy < player[playercounter].speedY / 10)
+							speedbonusy = player[playercounter].speedY / 20;
+
+						if (gameactivity.sologame)
+							gameactivity.popup.add(new Popup(position, 2, 0)); // popup text in score++ in solo mode
 					}
 				}
 
-				for (int ballcounter = 0; ballcounter < ball.size(); ballcounter++) // ball to ball collision detection
+				else // top players
 				{
-                    Ball currentball = ball.get(ballcounter);
-					if ((this != currentball) && (!collided)) // if ball is not compared to itself and has not yet collided
+					if ((position.y >= player[playercounter].position.y) && (position.y <= player[playercounter].position.y + gameactivity.pongheight) && (position.x >= player[playercounter].position.x) && (position.x <= player[playercounter].position.x + gameactivity.pongwidth) && (bump)) // top player to ball collision detection
 					{
-						if (checkCollision(currentball.getPosition())) // ball collision detected
-						{
-							new_angle = rnd.nextInt(speed);
-							angle = new_angle;
+						angle = rnd.nextInt(speed);
+						bump = false;
+						hits++;
 
-							GameActivity.getSoundManager().playSound(6, 1);
-							if ((goingleft) && (!currentball.goingleft))
-							{
-								goingleft = false;
-                                currentball.goingleft = true;
-							}
-							else 
-							{
-								goingleft = true;
-                                currentball.goingleft = false;
-							}
-                            currentball.collided = true;
-						}
+						gameactivity.shockwave.add(new Shockwave(position, Shockwave.EXTRA_SMALL_WAVE));
+						GameActivity.soundmanager.playSound(1, 1);
+
+						if ((hits > 0) && (hits % 3 == 0))
+							speed += 3;
 					}
 				}
-				collided = false;
 			}
 
-			pposition.x = position.x;
+            /////////////////////////////// BALL TO BALL COLLISION DETECTION /////////////////////////////
+
+			for (int ballcounter = 0; ballcounter < ball.size(); ballcounter++) // ball to ball collision detection
+			{
+                Ball currentball = ball.get(ballcounter);
+				if ((this != currentball) && (!collided)) // if ball is not compared to itself and has not yet collided
+				{
+					if (checkCollision(currentball.position)) // ball collision detected
+					{
+						angle = rnd.nextInt(speed);
+
+						GameActivity.soundmanager.playSound(SoundManager.HIT, 1);
+                        goingleft = !((goingleft) && (!currentball.goingleft)); // go right if bumped ball is going left
+                        currentball.goingleft = !goingleft; // reverse direction of the bumped ball
+                        currentball.collided = true;
+					}
+				}
+			}
+			collided = false;
+
+			pposition.x = position.x; // position tracing
 			pposition.y = position.y;
+
+            ////////////////////////// BALL MOVEMENT ///////////////////////////////
 
 			if (!bump)
 				position.y += speed + angle + speedbonusy;
@@ -182,159 +163,114 @@ final class Ball implements Runnable
 
 			if (spawnwave > 0) // spawn_wave animation
 			{
-				gameactivity.getShockwave().add(new Shockwave(position, 1));
+				gameactivity.shockwave.add(new Shockwave(position, Shockwave.SMALL_WAVE));
 				spawnwave--;
 			}
-			
-			if ((position.y < 0) || (position.y > gameactivity.getCanvasHeight())) // ball has exceeded top or bottom bounds
+
+            ////////////////////////// WORLD BOUNDS CONTROL ///////////////////////////////
+
+			if ((position.y < 0) || (position.y > gameactivity.canvasheight)) // ball has exceeded top or bottom bounds
 			{
-				if (!gameactivity.isSoloGame())
+				if (!gameactivity.sologame) // if multiplayer
 				{
 					if (position.y < 0) // ball has reached top
 					{
-						gameactivity.setLife(gameactivity.getLife() + 1);
-						gameactivity.getPopup().add(new Popup(position, 0));
+						gameactivity.life++;
+						gameactivity.popup.add(new Popup(position, 0, gameactivity.extralifestrings.length));
+                        GameActivity.soundmanager.playSound(SoundManager.LIFE_UP, 1);
 					}
 					else // ball has reached bottom
 					{
-						gameactivity.setLife(gameactivity.getLife() - 1);
-						gameactivity.getPopup().add(new Popup(position, 1));
+						gameactivity.life--;
+						gameactivity.popup.add(new Popup(position, 1, gameactivity.lostlifestrings.length));
+
+                        GameActivity.soundmanager.playSound(SoundManager.DOWN, 1);
 					}
 					if (supermode)
-						gameactivity.getShockwave().add(new Shockwave(position, 3));
+						gameactivity.shockwave.add(new Shockwave(position, Shockwave.LARGE_WAVE));
 					else
-						gameactivity.getShockwave().add(new Shockwave(getPosition(), 2));
-					
-					supermode = false;
-					GameActivity.getSoundManager().playSound(2, 1);
+						gameactivity.shockwave.add(new Shockwave(position, Shockwave.MEDIUM_WAVE));
+
 					gameactivity.doShake(100);
-
-					try 
-					{
-						sleeping = true;
-						Thread.sleep(1000);
-						sleeping = false;
-					} 
-					catch (InterruptedException e) 
-					{
-						e.printStackTrace();
-						Log.e("Ball", e.toString());
-					}
-
-					setx(); // reset ball
-					sety();
-					spawnwave = 5;
-					speed = 5;
-					hits = 0;
-					angle = rnd.nextInt(5);
-					speedbonusx = 0;
-					speedbonusy = 0;
-					GameActivity.getSoundManager().playSound(8, 1);
+                    alive = false;
 				}
 
-				else
+				else // if solo
 				{
 					if (position.y < 0) // ball has reached top
 					{
-						angle=rnd.nextInt(speed);
+						angle = rnd.nextInt(speed);
 						bump = false;
-						GameActivity.getSoundManager().playSound(4, 1);
 					}
 					else
 					{
-						gameactivity.setLife(gameactivity.getLife() - 1);
+						gameactivity.life--;
 						
 						if (supermode)
-							gameactivity.getShockwave().add(new Shockwave(position, 3));
+							gameactivity.shockwave.add(new Shockwave(position, Shockwave.LARGE_WAVE));
 						else
-							gameactivity.getShockwave().add(new Shockwave(getPosition(), 2));
+							gameactivity.shockwave.add(new Shockwave(position, Shockwave.MEDIUM_WAVE));
 						
 						supermode = false;
-						GameActivity.getSoundManager().playSound(2, 1);
-						gameactivity.getPopup().add(new Popup(position, 1));
+						GameActivity.soundmanager.playSound(SoundManager.DOWN, 1);
+						gameactivity.popup.add(new Popup(position, 1, gameactivity.lostlifestrings.length));
 						gameactivity.doShake(100);
-
-						try 
-						{
-							setSleeping(true);
-							Thread.sleep(1000);
-							setSleeping(false);
-						} 
-						catch (InterruptedException e) 
-						{
-							e.printStackTrace();
-							Log.e("Ball", e.toString());
-						}
-
-						setx(); // reset ball
-						sety();
-						spawnwave = 5;
-						speed = 5;
-						hits = 0;
-						angle = rnd.nextInt(5);
-						speedbonusx = 0;
-						speedbonusy = 0;
-						GameActivity.getSoundManager().playSound(8, 1);
+                        alive = false;
 					}
 				}
 			}
 
 			if (position.x < 0) // ball has reached left wall
 			{
-				angle=rnd.nextInt(speed);
+				angle = rnd.nextInt(speed);
 				goingleft = true;
-				GameActivity.getSoundManager().playSound(4, 1);
+				GameActivity.soundmanager.playSound(SoundManager.POPWALL, 1);
 			}
 
-			if (position.x > gameactivity.getCanvasWidth()) // ball has reached right wall
+			if (position.x > gameactivity.canvaswidth) // ball has reached right wall
 			{
-				angle=rnd.nextInt(speed);
+				angle = rnd.nextInt(speed);
 				goingleft = false;
-				GameActivity.getSoundManager().playSound(4, 1);
+                GameActivity.soundmanager.playSound(SoundManager.POPWALL, 1);
 			}
+
+            /////////// SUPER MODE CONTROLS //////////////
 
 			if ((speed == 11) && (!supermode)) // make super mode
 			{
-				GameActivity.getSoundManager().playSound(3, 1);
-				gameactivity.getShockwave().add(new Shockwave(position, 2));
+				GameActivity.soundmanager.playSound(SoundManager.DING, 1);
+				gameactivity.shockwave.add(new Shockwave(position, Shockwave.MEDIUM_WAVE));
 				supermode = true;
 			}
 
 			if (supermode) // draw super mode animation
 			{
-				gameactivity.getTrail().add(new Trail(pposition, position));
-				gameactivity.getShockwave().add(new Shockwave(position, 0));
+				gameactivity.trail.add(new Trail(pposition, position));
+				gameactivity.shockwave.add(new Shockwave(position, Shockwave.EXTRA_SMALL_WAVE));
 			}
 
 			try
 			{
 				Thread.sleep(40);
-			} 
+			}
+
 			catch (InterruptedException e)
 			{
 				e.printStackTrace();
 				Log.e("Ball", e.toString());
 			}
 		}
-	}
 
-	public boolean isBump() 
-	{
-		return bump;
-	}
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+            Log.e("Ball", e.toString());
+        }
 
-	public Point getPosition() 
-	{
-		return position;
-	}
-
-	public boolean isSleeping() 
-	{
-		return sleeping;
-	}
-
-	public void setSleeping(boolean sleep) 
-	{
-		this.sleeping = sleep;
+        gameactivity.ball.remove(this); // remove this dead ball
 	}
 }

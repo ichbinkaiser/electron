@@ -4,7 +4,6 @@ import core.electron.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,13 +27,7 @@ public class MainActivity extends Activity
 	public void onDestroy()
 	{
 		super.onDestroy();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) 
-	{
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
+        GameActivity.soundmanager.doCleanup();
 	}
 
 	public void startGame(View view)

@@ -5,15 +5,16 @@ import android.util.Log;
 
 final class Player implements Runnable
 {
-	private GameActivity gameactivity;
-	private Point position = new Point();
-	private Point pposition = new Point(); // last position
-	private boolean right = true; // is left direction
-	private int speedY, speedX; // side speed
+	GameActivity gameactivity;
+	Point position = new Point();
+	Point pposition = new Point(); // last position
+	boolean goingRight = true; // is left direction
+	int speedY, speedX; // side speed
 	
 	Player(GameActivity gameactivity) 
 	{
 		this.gameactivity = gameactivity;
+        start();
 	}
 	
 	public void start()
@@ -25,13 +26,15 @@ final class Player implements Runnable
 
 	public void run() 
 	{
+        ////////////// PLAYER MOVEMENT TRACKING ///////////////
+
 		int tspeedX, tspeedY; // speed placeholder
-		while (gameactivity.isRunning())
+		while (gameactivity.running)
 		{
 			if (position.x > pposition.x)
-				right = true; // bottom player has moved right		
+				goingRight = true; // bottom player has moved goingRight
 			else if (position.x < pposition.x)
-				right = false; // bottom player has moved left
+				goingRight = false; // bottom player has moved left
 			
 			pposition.set(position.x, position.y);
 
@@ -45,46 +48,12 @@ final class Player implements Runnable
 				speedX = Math.abs(tspeedX);
 				speedY = Math.abs(tspeedY);
 			}
+
 			catch (InterruptedException e)
 			{
 				e.printStackTrace();
 				Log.e("Player", e.toString());
 			}
 		}
-	}
-
-	public Point getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition(Point position)
-	{
-		this.position = position;
-	}
-
-	public boolean isRight()
-	{
-		return right;
-	}
-
-	public void setRight(boolean right)
-	{
-		this.right = right;
-	}
-	
-	public int getSpeedX()
-	{
-		return speedX;
-	}
-
-	public int getSpeedY()
-	{
-		return speedY;
-	}
-
-	public void setPposition(Point pposition)
-	{
-		this.pposition = pposition;
 	}
 }

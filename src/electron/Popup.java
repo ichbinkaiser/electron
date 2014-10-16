@@ -5,53 +5,35 @@ import android.graphics.Point;
 
 final class Popup 
 {
-	private Point position = new Point();
-	private int counter = 255; // animation index counter
-	private int type; // popup message type
-	private Random rnd = new Random();
-	private int textindex = rnd.nextInt(10); // random text index
+    final static int SCOREUP = 0, LOSELIFE = 1, SOLO = 2;
+	Point position = new Point();
+    int life = 255; // animation index life
+	int type; // popup message type
+    int index = 0; // text message index
 	
-	Popup(Point position, int type)
+	Popup(Point position, int type, int indexsize)
 	{
-		this.setType(type);
-		this.getPosition().x = position.x;
+        Random rnd = new Random();
+        if (indexsize > 0);
+            index = rnd.nextInt(indexsize);
+
+		this.type = type;
+		this.position.x = position.x;
 		
 		switch(type)
 		{
-		case 0:
-			this.getPosition().y = position.y + 255;
-			break;
-		case 1:
-			this.getPosition().y = position.y - 255;
-			break;
-		case 2:
-			this.getPosition().y = position.y - 255;
-			break;
+            case SCOREUP:
+                this.position.y = position.y + 255;
+                break;
+            case LOSELIFE:
+            case SOLO:
+                this.position.y = position.y - 255;
 		}
 	}
 
-	public int getTextIndex() 
+	public int getLife()
 	{
-		return textindex;
+		return life--;
 	}
 
-	public int getlife()
-	{
-		return counter--;
-	}
-
-	public int getType() 
-	{
-		return type;
-	}
-
-	public void setType(int type) 
-	{
-		this.type = type;
-	}
-
-	public Point getPosition() 
-	{
-		return position;
-	}
 }

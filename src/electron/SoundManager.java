@@ -10,17 +10,15 @@ import android.util.SparseIntArray;
 
 final class SoundManager
 {
-	public SoundPool soundpool;
-	private SparseIntArray sounds;
-	private AudioManager  audiomanager;
-	private Context context;
-	public int soundsloaded = 0;
-	private int[] soundlibrary = new int[] {R.raw.pop, R.raw.lifeup, R.raw.ding, R.raw.popwall, R.raw.down, R.raw.hit, R.raw.restart, R.raw.spawn};
+    final static int POP = 0, LIFE_UP = 1, DING = 2, POPWALL = 3, DOWN = 4, HIT = 5, RESTART = 6, SPAWN = 7;
 
-	public int getSoundLibrarySize()
-	{
-		return soundlibrary.length;
-	}
+    public SoundPool soundpool;
+	SparseIntArray sounds;
+	AudioManager  audiomanager;
+	Context context;
+
+    public int soundsloaded = 0;
+	int[] soundlibrary = new int[] {R.raw.pop, R.raw.lifeup, R.raw.ding, R.raw.popwall, R.raw.down, R.raw.hit, R.raw.restart, R.raw.spawn};
 
 	public void initSounds(Context context)
 	{
@@ -34,7 +32,7 @@ final class SoundManager
 	{
 		soundsloaded = 0;
 		soundpool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			public void onLoadComplete(SoundPool soundPool, int sampleId,int status) {
+			public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
 				soundsloaded++;
 				Log.i("SoundManager", "Sample" + Integer.toString(sampleId) + " loaded");
 			}
@@ -46,13 +44,13 @@ final class SoundManager
 		}
 	}
 
-	public void playSound(int index,float speed)
+	public void playSound(int index, float speed)
 	{
 		if (soundsloaded==8)
 		{
 			float streamVolume = audiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
 			streamVolume = streamVolume / audiomanager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-			soundpool.play((Integer) sounds.get(index), streamVolume, streamVolume, 1, 0, speed);
+			soundpool.play(sounds.get(index), streamVolume, streamVolume, 1, 0, speed);
 		}
 	}
 
