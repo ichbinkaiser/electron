@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Electron.iml" filepath="$PROJECT_DIR$/Electron.iml" />
+      <module fileurl="file://$PROJECT_DIR$/electron/electron.iml" filepath="$PROJECT_DIR$/electron/electron.iml" />
     </modules>
   </component>
 </project>
