@@ -455,7 +455,6 @@ public class GameActivity extends Activity
                             canvas.drawCircle(currentshockwave.position.x, currentshockwave.position.y, 252 - currentshockwavelife, circlestrokepaint);
 					}
 				}
-
 				else
 					shockwave.remove(shockwavecounter);
 			}
@@ -480,7 +479,6 @@ public class GameActivity extends Activity
                             canvas.drawText("+1", currentpopup.position.x, currentpopup.position.y + currentpopup.getLife(), popuptext);
 					}
 				}
-
 				else
 					popup.remove(popupcounter);
 			}

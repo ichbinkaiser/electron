@@ -35,11 +35,11 @@ final class Shockwave
 	{
         switch (type)
         {
-            case 0:
-            case 1:
+            case EXTRA_SMALL_WAVE:
+            case SMALL_WAVE:
                 return life -= 1;
-            case 2:
-            case 3:
+            case MEDIUM_WAVE:
+            case LARGE_WAVE:
                 return life -= 4;
             default:
                 return 0;

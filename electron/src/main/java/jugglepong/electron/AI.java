@@ -78,6 +78,7 @@ final class AI implements Runnable
 					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x < gameactivity.midpoint))
 						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within second quadrant
 				}
+
 				else
 				{
 					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x > gameactivity.midpoint))
@@ -90,6 +91,7 @@ final class AI implements Runnable
 					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x < gameactivity.midpoint))
 						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within second quadrant
 				}
+
 				else
 				{
 					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x > gameactivity.midpoint))
@@ -102,6 +104,7 @@ final class AI implements Runnable
 					if ((!ball.bump) && (ball.position.y > target.y) && (ball.position.x < gameactivity.midpoint))
 						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y - gameactivity.pongheight / 2); // check for priority target within fourth quadrant
 				}
+
 				else
 				{
 					if ((!ball.bump) && (ball.position.y > target.y) && (ball.position.x > gameactivity.midpoint))
@@ -138,6 +141,7 @@ final class AI implements Runnable
                             guardboxleft = 0;
                             guardboxright = gameactivity.midpoint;
                         }
+
                         else
                         {
                             target.set(gameactivity.midpoint + gameactivity.midpoint / 2, gameactivity.canvasheight);
@@ -153,6 +157,7 @@ final class AI implements Runnable
                             guardboxleft = 0;
                             guardboxright = gameactivity.midpoint;
                         }
+
                         else
                         {
                             target.set(gameactivity.midpoint + gameactivity.midpoint / 2, gameactivity.canvasheight);
@@ -175,7 +180,6 @@ final class AI implements Runnable
                             guardboxleft = gameactivity.midpoint;
                             guardboxright = gameactivity.canvaswidth;
                         }
-                        break;
 				}
 			}
 

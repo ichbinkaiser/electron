@@ -88,16 +88,14 @@ final class Ball implements Runnable
 							gameactivity.doShake(40);
 
 							if ((gameactivity.gamescore % 20 == 0) && (gameactivity.ballcount < 0))
-							{
 								ball.add(new Ball(gameactivity, ball, player, true));
-
-							}
 						}
 						GameActivity.soundmanager.playSound(1, 1);
 
 						gameactivity.hitcounter++;
 
-						if ((hits > 0) && (hits % 3 == 0)) speed += 3; // increase ball speed for ever three hits
+						if ((hits > 0) && (hits % 3 == 0)) // increase ball speed for ever three hits
+                            speed += 3;
 
 						if (speedbonusx < player[playercounter].speedX / 10)
 							speedbonusx = (player[playercounter].speedX / 20); // get ball speed bonus from directional velocity of player
@@ -180,6 +178,7 @@ final class Ball implements Runnable
 						gameactivity.popup.add(new Popup(position, 0, gameactivity.extralifestrings.length));
                         GameActivity.soundmanager.playSound(SoundManager.LIFE_UP, 1);
 					}
+
 					else // ball has reached bottom
 					{
 						gameactivity.life--;
@@ -187,6 +186,7 @@ final class Ball implements Runnable
 
                         GameActivity.soundmanager.playSound(SoundManager.DOWN, 1);
 					}
+
 					if (supermode)
 						gameactivity.shockwave.add(new Shockwave(position, Shockwave.LARGE_WAVE));
 					else
@@ -203,6 +203,7 @@ final class Ball implements Runnable
 						angle = rnd.nextInt(speed);
 						bump = false;
 					}
+
 					else
 					{
 						gameactivity.life--;
