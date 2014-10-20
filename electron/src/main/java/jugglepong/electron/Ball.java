@@ -117,7 +117,7 @@ final class Ball implements Runnable
 						hits++;
 
 						gameactivity.shockwave.add(new Shockwave(position, Shockwave.EXTRA_SMALL_WAVE));
-						GameActivity.soundmanager.playSound(1, 1);
+						GameActivity.soundmanager.playSound(SoundManager.POP, 1);
 
 						if (hits > 0 && hits % 3 == 0)
 							speed += 3;
@@ -137,7 +137,7 @@ final class Ball implements Runnable
 						angle = rnd.nextInt(speed);
 
 						GameActivity.soundmanager.playSound(SoundManager.HIT, 1);
-                        goingleft = !((goingleft) && (!currentball.goingleft)); // go right if bumped ball is going left
+                        goingleft = !goingleft && !currentball.goingleft; // go right if bumped ball is going left
                         currentball.goingleft = !goingleft; // reverse direction of the bumped ball
                         currentball.collided = true;
 					}

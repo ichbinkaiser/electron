@@ -149,7 +149,6 @@ public class GameActivity extends Activity
 			{
 				if (life < 0) // game over condition
 				{
-					gamesurfacethread.running = false;
 					soundmanager.playSound(SoundManager.RESTART, 1);
 					showScore();
 				}
@@ -337,7 +336,6 @@ public class GameActivity extends Activity
 
 		public void surfaceDestroyed(SurfaceHolder holder) // when user leaves game
 		{
-			gamesurfacethread.running = false;
 			running = false;
 			Log.i(getLocalClassName(), "Surface destroyed");
 		}
@@ -350,7 +348,6 @@ public class GameActivity extends Activity
 		public void surfaceCreated(SurfaceHolder holder) // when user enters game
 		{
 			gamesurfacethread = new GameSurfaceThread(GameActivity.this, holder, this);
-			gamesurfacethread.start();
 			Log.i(getLocalClassName(), "Surface created");
 		}
 

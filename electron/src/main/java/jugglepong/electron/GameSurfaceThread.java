@@ -8,7 +8,6 @@ import jugglepong.electron.GameActivity.MyDraw;
 final class GameSurfaceThread extends Thread 
 {
 	GameActivity gameactivity;
-	boolean running = true; // game is running
 	SurfaceHolder myholder;
 	MyDraw mydraw;
 	
@@ -18,12 +17,13 @@ final class GameSurfaceThread extends Thread
 		setName("SurfaceView");
 		myholder = holder;
 		mydraw = drawmain;
+        start();
 	}
 
 	public void run()
 	{
 		Canvas canvas = null;
-		while(running)
+		while(gameactivity.running)
 		{
 			try
 			{
