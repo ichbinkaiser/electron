@@ -64,7 +64,7 @@ final class AI implements Runnable
 	{
 		if (gameactivity.portrait) // if two player
 		{
-			if ((ball.bump) && (ball.position.y < target.y))
+			if (ball.bump && ball.position.y < target.y)
 				target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y - gameactivity.pongheight / 2); // check for priority target
 		}
 
@@ -73,41 +73,41 @@ final class AI implements Runnable
 			switch (quadrant)
 			{
 			case TOPLEFT:
-				if (!gameactivity.reverseposition)
-				{
-					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x < gameactivity.midpoint))
-						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within second quadrant
-				}
+				if (gameactivity.reverseposition)
+                {
+                    if (ball.bump && ball.position.y < target.y && ball.position.x > gameactivity.midpoint)
+                        target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within third quadrant
+                }
 
-				else
+                else
 				{
-					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x > gameactivity.midpoint))
-						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within third quadrant
+					if (ball.bump && ball.position.y < target.y && ball.position.x < gameactivity.midpoint)
+						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within second quadrant
 				}
 				break;
 			case TOPRIGHT:
 				if (gameactivity.reverseposition)
 				{
-					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x < gameactivity.midpoint))
+					if (ball.bump && ball.position.y < target.y && ball.position.x < gameactivity.midpoint)
 						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within second quadrant
 				}
 
 				else
 				{
-					if ((ball.bump) && (ball.position.y < target.y) && (ball.position.x > gameactivity.midpoint))
+					if (ball.bump && ball.position.y < target.y && ball.position.x > gameactivity.midpoint)
 						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y + gameactivity.pongheight / 2); // check for priority target within third quadrant
 				}
 				break;
 			case BOTTOMRIGHT:
 				if (user.position.x > gameactivity.midpoint) // check which quadrant player is located
 				{
-					if ((!ball.bump) && (ball.position.y > target.y) && (ball.position.x < gameactivity.midpoint))
+					if (!ball.bump && ball.position.y > target.y && ball.position.x < gameactivity.midpoint)
 						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y - gameactivity.pongheight / 2); // check for priority target within fourth quadrant
 				}
 
 				else
 				{
-					if ((!ball.bump) && (ball.position.y > target.y) && (ball.position.x > gameactivity.midpoint))
+					if (!ball.bump && ball.position.y > target.y && ball.position.x > gameactivity.midpoint)
 						target.set(ball.position.x - gameactivity.pongwidth / 2, ball.position.y - gameactivity.pongheight / 2); // check for priority target within first quadrant
 				}
 				break;
@@ -191,7 +191,7 @@ final class AI implements Runnable
 
             ///////////////////////////////// AI MOVEMENT /////////////////////////////////////////
 
-			if ((position.x < target.x) && (position.x <= guardboxright)) // AI move goingRight
+			if (position.x < target.x && position.x <= guardboxright) // AI move goingRight
 			{
 				if (Math.abs(target.x - position.x) > 10) // turbo mode
 					if (gameactivity.portrait)
@@ -202,7 +202,7 @@ final class AI implements Runnable
 					position.x++;
 			}
 
-			else if ((position.x > target.x) && (position.x >= guardboxleft)) // AI move left
+			else if (position.x > target.x && position.x >= guardboxleft) // AI move left
 			{
 				if (Math.abs(target.x - position.x) > 10)
 					if (gameactivity.portrait)
@@ -213,7 +213,7 @@ final class AI implements Runnable
 					position.x--;
 			}
 
-			if ((position.y < target.y) && (target.y <= guardboxbottom)) // AI move down
+			if (position.y < target.y && target.y <= guardboxbottom) // AI move down
 			{
 				if (Math.abs(target.y - position.y) > 10)
 					position.y += 5;
@@ -221,10 +221,13 @@ final class AI implements Runnable
 					position.y++;
 			}
 
-			else if ((position.y > target.y) && (position.y > guardboxtop)) // AI move up
+			else if (position.y > target.y && position.y > guardboxtop) // AI move up
 			{
 				if (Math.abs(target.y - position.y) > 10)
-					if (gameactivity.portrait) position.y -= 8; else position.y -= 5;
+					if (gameactivity.portrait)
+                        position.y -= 8;
+                    else
+                        position.y -= 5;
 				else
 					position.y--;
 			}

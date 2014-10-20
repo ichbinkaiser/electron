@@ -53,7 +53,7 @@ final class Ball implements Runnable
 
 	boolean checkCollision(Point object) // ball collision detection
 	{
-		return (((object.x <= position.x + gameactivity.ballsize - 1) && (object.x >= position.x - gameactivity.ballsize - 1) && ((object.y <= position.y + gameactivity.ballsize - 1) && (object.y >= position.y - gameactivity.ballsize - 1))));
+		return object.x <= position.x + gameactivity.ballsize - 1 && object.x >= position.x - gameactivity.ballsize - 1 && object.y <= position.y + gameactivity.ballsize - 1 && object.y >= position.y - gameactivity.ballsize - 1;
 	}
 
 	public void start()
@@ -71,9 +71,9 @@ final class Ball implements Runnable
 
 			for (int playercounter = 0; playercounter < player.length; playercounter++)
 			{
-				if ((playercounter == 0) || (playercounter == 3)) // bottom player
+				if (playercounter == 0 || playercounter == 3) // bottom player
 				{
-					if ((position.y >= player[playercounter].position.y) && (position.y <= player[playercounter].position.y + gameactivity.pongheight) && (position.x >= player[playercounter].position.x) && (position.x <= player[playercounter].position.x + gameactivity.pongwidth) && (!bump)) // bottom player to ball collision detection
+					if (position.y >= player[playercounter].position.y && position.y <= player[playercounter].position.y + gameactivity.pongheight && position.x >= player[playercounter].position.x && position.x <= player[playercounter].position.x + gameactivity.pongwidth && !bump) // bottom player to ball collision detection
 					{
 						angle = rnd.nextInt(speed);
 						bump = true;
@@ -87,14 +87,14 @@ final class Ball implements Runnable
 							gameactivity.gamescore =+ (1 + speed / 11);
 							gameactivity.doShake(40);
 
-							if ((gameactivity.gamescore % 20 == 0) && (gameactivity.ballcount < 0))
+							if (gameactivity.gamescore % 20 == 0 && gameactivity.ballcount < 0)
 								ball.add(new Ball(gameactivity, ball, player, true));
 						}
 						GameActivity.soundmanager.playSound(1, 1);
 
 						gameactivity.hitcounter++;
 
-						if ((hits > 0) && (hits % 3 == 0)) // increase ball speed for ever three hits
+						if (hits > 0 && hits % 3 == 0) // increase ball speed for ever three hits
                             speed += 3;
 
 						if (speedbonusx < player[playercounter].speedX / 10)
@@ -110,7 +110,7 @@ final class Ball implements Runnable
 
 				else // top players
 				{
-					if ((position.y >= player[playercounter].position.y) && (position.y <= player[playercounter].position.y + gameactivity.pongheight) && (position.x >= player[playercounter].position.x) && (position.x <= player[playercounter].position.x + gameactivity.pongwidth) && (bump)) // top player to ball collision detection
+					if (position.y >= player[playercounter].position.y && position.y <= player[playercounter].position.y + gameactivity.pongheight && position.x >= player[playercounter].position.x && position.x <= player[playercounter].position.x + gameactivity.pongwidth && bump) // top player to ball collision detection
 					{
 						angle = rnd.nextInt(speed);
 						bump = false;
@@ -119,7 +119,7 @@ final class Ball implements Runnable
 						gameactivity.shockwave.add(new Shockwave(position, Shockwave.EXTRA_SMALL_WAVE));
 						GameActivity.soundmanager.playSound(1, 1);
 
-						if ((hits > 0) && (hits % 3 == 0))
+						if (hits > 0 && hits % 3 == 0)
 							speed += 3;
 					}
 				}
@@ -130,7 +130,7 @@ final class Ball implements Runnable
 			for (int ballcounter = 0; ballcounter < ball.size(); ballcounter++) // ball to ball collision detection
 			{
                 Ball currentball = ball.get(ballcounter);
-				if ((this != currentball) && (!collided)) // if ball is not compared to itself and has not yet collided
+				if (this != currentball && !collided) // if ball is not compared to itself and has not yet collided
 				{
 					if (checkCollision(currentball.position)) // ball collision detected
 					{
@@ -168,7 +168,7 @@ final class Ball implements Runnable
 
             ////////////////////////// WORLD BOUNDS CONTROL ///////////////////////////////
 
-			if ((position.y < 0) || (position.y > gameactivity.canvasheight)) // ball has exceeded top or bottom bounds
+			if (position.y < 0 || position.y > gameactivity.canvasheight) // ball has exceeded top or bottom bounds
 			{
 				if (!gameactivity.sologame) // if multiplayer
 				{
@@ -238,7 +238,7 @@ final class Ball implements Runnable
 
             /////////// SUPER MODE CONTROLS //////////////
 
-			if ((speed == 11) && (!supermode)) // make super mode
+			if (speed == 11 && !supermode) // make super mode
 			{
 				GameActivity.soundmanager.playSound(SoundManager.DING, 1);
 				gameactivity.shockwave.add(new Shockwave(position, Shockwave.MEDIUM_WAVE));

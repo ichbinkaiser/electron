@@ -45,7 +45,7 @@ final class SoundManager
 
 	public void playSound(int index, float speed)
 	{
-		if (soundsloaded==8)
+		if (soundsloaded == soundlibrary.length)
 		{
 			float streamVolume = audiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
 			streamVolume = streamVolume / audiomanager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);

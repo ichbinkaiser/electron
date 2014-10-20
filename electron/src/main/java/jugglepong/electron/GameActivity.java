@@ -357,8 +357,7 @@ public class GameActivity extends Activity
 		@Override
 		public boolean onTouchEvent(MotionEvent event)
 		{
-			int action = event.getAction();
-			if (action == MotionEvent.ACTION_MOVE)
+			if (event.getAction() == MotionEvent.ACTION_MOVE)
 			{
 				player[0].position.x = (int)event.getX();
 				
@@ -376,7 +375,7 @@ public class GameActivity extends Activity
 			canvas.drawBitmap(back, 0, 0, null);
 			centerlinepaint.setColor(Color.argb(centerlinecounter, 255, 255, 255));
 			
-			if ((centerlinecounter == 128) || (centerlinecounter == 32))
+			if (centerlinecounter == 128 || centerlinecounter == 32)
                 centerlineup = !centerlineup;
 			
 			if (centerlineup)
@@ -392,7 +391,7 @@ public class GameActivity extends Activity
 
 			for (int playercounter = 0; playercounter < player.length; playercounter++) // draw player
 			{
-				if ((playercounter == 0) || (playercounter == 3)) // if player is a bottom player
+				if (playercounter == 0 || playercounter == 3) // if player is a bottom player
 					if (player[playercounter].goingRight)
 						canvas.drawBitmap(pongbottomright, player[playercounter].position.x, player[playercounter].position.y, null);
 					else
