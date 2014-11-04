@@ -31,11 +31,7 @@ final class Player implements Runnable
 		int tspeedX, tspeedY; // speed placeholder
 		while (gameactivity.running)
 		{
-			if (position.x > pposition.x)
-				goingRight = true; // bottom player has moved goingRight
-			else if (position.x < pposition.x)
-				goingRight = false; // bottom player has moved left
-			
+            goingRight = position.x > pposition.x;
 			pposition.set(position.x, position.y);
 
 			try // get player velocity
