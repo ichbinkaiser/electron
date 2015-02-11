@@ -20,16 +20,11 @@ final class Popup
 
 		this.type = type;
 		this.position.x = position.x;
-		
-		switch(type)
-		{
-            case SCOREUP:
-                this.position.y = position.y + 255;
-                break;
-            case LOSELIFE:
-            case SOLO:
-                this.position.y = position.y - 255;
-		}
+
+        if (type == SCOREUP)
+            this.position.y = position.y + 255;
+        else
+            this.position.y = position.y - 255;
 	}
 
 	public int getLife()

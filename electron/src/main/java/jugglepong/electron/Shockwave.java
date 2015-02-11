@@ -33,16 +33,9 @@ final class Shockwave
 	
 	public int getLife()
 	{
-        switch (type)
-        {
-            case EXTRA_SMALL_WAVE:
-            case SMALL_WAVE:
-                return life -= 1;
-            case MEDIUM_WAVE:
-            case LARGE_WAVE:
-                return life -= 4;
-            default:
-                return 0;
-        }
+        if (type == EXTRA_SMALL_WAVE || type == SMALL_WAVE)
+            return life -= 1;
+        else
+            return life -= 4;
 	}
 }

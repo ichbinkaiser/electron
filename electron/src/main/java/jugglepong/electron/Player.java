@@ -8,7 +8,7 @@ final class Player implements Runnable
 	GameActivity gameactivity;
 	Point position = new Point();
 	Point pposition = new Point(); // last position
-	boolean goingRight = true; // is left direction
+	boolean goingRight = true; // is going right direction
 	int speedY, speedX; // side speed
 	
 	Player(GameActivity gameactivity) 
@@ -31,8 +31,10 @@ final class Player implements Runnable
 		int tspeedX, tspeedY; // speed placeholder
 		while (gameactivity.running)
 		{
-            goingRight = position.x > pposition.x;
-			pposition.set(position.x, position.y);
+            if (position.x != pposition.x)
+                goingRight = position.x > pposition.x;
+
+            pposition.set(position.x, position.y);
 
 			try // get player velocity
 			{
