@@ -1,4 +1,4 @@
-package jugglepong.electron;
+package ichbinkaiser.electron;
 
 import android.graphics.Point;
 import android.util.Log;

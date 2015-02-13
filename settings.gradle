@@ -1,1 +1,1 @@
-include ':electron'
+include ':app'

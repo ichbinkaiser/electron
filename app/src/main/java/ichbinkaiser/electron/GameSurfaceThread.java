@@ -1,9 +1,9 @@
-package jugglepong.electron;
+package ichbinkaiser.electron;
 
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import jugglepong.electron.GameActivity.MyDraw;
+import ichbinkaiser.electron.GameActivity.MyDraw;
 
 final class GameSurfaceThread extends Thread 
 {

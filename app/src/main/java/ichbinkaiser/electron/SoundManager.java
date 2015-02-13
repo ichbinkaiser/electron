@@ -1,4 +1,4 @@
-package jugglepong.electron;
+package ichbinkaiser.electron;
 
 import android.content.Context;
 import android.media.AudioManager;

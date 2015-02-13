@@ -1,4 +1,4 @@
-package jugglepong.electron;
+package ichbinkaiser.electron;
 
 import android.app.Activity;
 import android.content.Context;
