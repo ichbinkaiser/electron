@@ -4,32 +4,35 @@ import android.graphics.Point;
 
 import java.util.Random;
 
-final class Popup 
+final class Popup
 {
-    final static int SCOREUP = 0, LOSELIFE = 1, SOLO = 2;
-	Point position = new Point();
+    Point position = new Point();
     int life = 255; // animation index life
-	int type; // popup message type
+    Type type; // popup message type
     int index = 0; // text message index
-	
-	Popup(Point position, int type, int indexsize)
-	{
+    Popup(Point position, Type type, int indexSize)
+    {
         Random rnd = new Random();
-        if (indexsize > 0);
-            index = rnd.nextInt(indexsize);
+        if (indexSize > 0) ;
+        index = rnd.nextInt(indexSize);
 
-		this.type = type;
-		this.position.x = position.x;
+        this.type = type;
+        this.position.x = position.x;
 
-        if (type == SCOREUP)
+        if (type == Type.SCOREUP)
             this.position.y = position.y + 255;
         else
             this.position.y = position.y - 255;
-	}
+    }
 
-	public int getLife()
-	{
-		return life--;
-	}
+    public int getLife()
+    {
+        return life--;
+    }
+
+    enum Type
+    {
+        SCOREUP, LOSELIFE, SOLO
+    }
 
 }

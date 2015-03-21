@@ -9,49 +9,53 @@ import android.util.SparseIntArray;
 
 final class SoundManager
 {
-    final static int POP = 1, LIFE_UP = 2, DING = 3, POPWALL = 4, DOWN = 5, HIT = 6, RESTART = 7, SPAWN = 8;
+    SoundPool soundpool;
+    int soundsLoaded = 0;
+    SparseIntArray sounds;
+    AudioManager audioManager;
+    Context context;
+    int[] soundLibrary = new int[]{R.raw.pop, R.raw.lifeup, R.raw.ding, R.raw.popwall, R.raw.down, R.raw.hit, R.raw.restart, R.raw.spawn};
 
-    public SoundPool soundpool;
-	SparseIntArray sounds;
-	AudioManager  audiomanager;
-	Context context;
+    public void initSounds(Context context)
+    {
+        this.context = context;
+        soundpool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        sounds = new SparseIntArray();
+        audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    }
 
-    public int soundsloaded = 0;
-	int[] soundlibrary = new int[] {R.raw.pop, R.raw.lifeup, R.raw.ding, R.raw.popwall, R.raw.down, R.raw.hit, R.raw.restart, R.raw.spawn};
+    public void loadSounds() // load sounds to IntArray
+    {
+        soundsLoaded = 0;
+        soundpool.setOnLoadCompleteListener(new OnLoadCompleteListener()
+        {
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status)
+            {
+                soundsLoaded++;
+                Log.i("SoundManager", "Sample" + Integer.toString(sampleId) + " loaded");
+            }
+        });
 
-	public void initSounds(Context context)
-	{
-		this.context = context;
-		soundpool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-		sounds = new SparseIntArray();
-		audiomanager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-	}
+        for (int soundindex = 0; soundindex < soundLibrary.length; soundindex++)
+        {
+            sounds.put(soundindex + 1, soundpool.load(context, soundLibrary[soundindex], 1));
+        }
+    }
 
-	public void loadSounds() // load sounds to IntArray
-	{
-		soundsloaded = 0;
-		soundpool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-				soundsloaded++;
-				Log.i("SoundManager", "Sample" + Integer.toString(sampleId) + " loaded");
-			}
-		});
-		
-		for (int soundindex = 0; soundindex < soundlibrary.length; soundindex++)
-		{
-			sounds.put(soundindex + 1, soundpool.load(context, soundlibrary[soundindex], 1));
-		}
-	}
+    public void playSound(Sound sound, float speed)
+    {
+        float streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        streamVolume = streamVolume / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        soundpool.play(sounds.get(sound.ordinal() + 1), streamVolume, streamVolume, 1, 0, speed);
+    }
 
-	public void playSound(int index, float speed)
-	{
-		float streamVolume = audiomanager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		streamVolume = streamVolume / audiomanager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-		soundpool.play(sounds.get(index), streamVolume, streamVolume, 1, 0, speed);
-	}
+    public void doCleanup()
+    {
+        soundpool.release();
+    }
 
-	public void doCleanup()
-	{
-		soundpool.release();
-	}
+    public static enum Sound
+    {
+        POP, LIFE_UP, DING, POPWALL, DOWN, HIT, RESTART, SPAWN;
+    }
 }
