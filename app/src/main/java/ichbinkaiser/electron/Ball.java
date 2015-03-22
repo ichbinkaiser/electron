@@ -27,10 +27,10 @@ final class Ball implements Runnable
     int speedBonusX = 0, speedBonusY = 0;
     int spawnWave = 0;
 
-    Ball(GameActivity gameActivity, ArrayList<Ball> ball, Player[] player, boolean newBall)
+    Ball(GameActivity gameActivity, ArrayList<Ball> balls, Player[] player, boolean newBall)
     {
         this.gameActivity = gameActivity;
-        this.balls = ball;
+        this.balls = balls;
         this.player = player;
 
         goingLeft = rnd.nextBoolean();
@@ -39,9 +39,13 @@ final class Ball implements Runnable
         position.x = rnd.nextInt(gameActivity.canvasWidth);
 
         if (!bump)
+        {
             position.y = rnd.nextInt(150) + 5;
+        }
         else
+        {
             position.y = rnd.nextInt(150) + gameActivity.canvasHeight - 150;
+        }
 
         if (newBall)
         {
@@ -78,7 +82,7 @@ final class Ball implements Runnable
                         angle = rnd.nextInt(speed);
                         bump = true;
                         hits++;
-                        gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.EXTRA_SMALL_WAVE));
+                        gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.EXTRA_SMALL_WAVE));
 
                         goingLeft = (player[playercounter].goingRight);
 
@@ -88,23 +92,33 @@ final class Ball implements Runnable
                             gameActivity.doShake(40);
 
                             if (gameActivity.gameScore % 20 == 0 && gameActivity.ballCount < 0)
+                            {
                                 balls.add(new Ball(gameActivity, balls, player, true));
+                            }
                         }
                         GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP, 1);
 
                         gameActivity.hitCounter++;
 
                         if (hits > 0 && hits % 3 == 0) // increase balls speed for ever three hits
+                        {
                             speed += 3;
+                        }
 
                         if (speedBonusX < player[playercounter].speedX / 10)
+                        {
                             speedBonusX = (player[playercounter].speedX / 20); // get balls speed bonus from directional velocity of player
+                        }
 
                         if (speedBonusY < player[playercounter].speedY / 10)
+                        {
                             speedBonusY = player[playercounter].speedY / 20;
+                        }
 
                         if (gameActivity.soloGame)
-                            gameActivity.popup.add(new Popup(position, Popup.Type.SOLO, 0)); // popup text in score++ in solo mode
+                        {
+                            gameActivity.popups.add(new Popup(position, Popup.Type.SOLO, 0)); // popups text in score++ in solo mode
+                        }
                     }
                 }
 
@@ -116,29 +130,30 @@ final class Ball implements Runnable
                         bump = false;
                         hits++;
 
-                        gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.EXTRA_SMALL_WAVE));
+                        gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.EXTRA_SMALL_WAVE));
                         GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP, 1);
 
                         if (hits > 0 && hits % 3 == 0)
+                        {
                             speed += 3;
+                        }
                     }
                 }
             }
 
             /////////////////////////////// BALL TO BALL COLLISION DETECTION /////////////////////////////
 
-            for (Ball currentball : balls) // balls to balls collision detection
+            for (Ball currentBall : balls) // balls to balls collision detection
             {
-                if (this != currentball && !collided) // if balls is not compared to itself and has not yet collided
+                if (this != currentBall && !collided) // if balls is not compared to itself and has not yet collided
                 {
-                    if (checkCollision(currentball.position)) // balls collision detected
+                    if (checkCollision(currentBall.position)) // balls collision detected
                     {
                         angle = rnd.nextInt(speed);
-
                         GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.HIT, 1);
-                        goingLeft = !goingLeft && !currentball.goingLeft; // go right if bumped balls is going left
-                        currentball.goingLeft = !goingLeft; // reverse direction of the bumped balls
-                        currentball.collided = true;
+                        goingLeft = !goingLeft && !currentBall.goingLeft; // go right if bumped balls is going left
+                        currentBall.goingLeft = !goingLeft; // reverse direction of the bumped balls
+                        currentBall.collided = true;
                     }
                 }
             }
@@ -150,18 +165,26 @@ final class Ball implements Runnable
             ////////////////////////// BALL MOVEMENT ///////////////////////////////
 
             if (!bump)
+            {
                 position.y += speed + angle + speedBonusY;
+            }
             else
+            {
                 position.y -= speed + angle + speedBonusY; // balls vertical movement
+            }
 
             if (goingLeft)
+            {
                 position.x += speed + speedBonusX;
+            }
             else
+            {
                 position.x -= speed + speedBonusX; // balls horizontal movement
+            }
 
             if (spawnWave > 0) // spawn_wave animation
             {
-                gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.SMALL_WAVE));
+                gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.SMALL_WAVE));
                 spawnWave--;
             }
 
@@ -169,27 +192,31 @@ final class Ball implements Runnable
 
             if (position.y < 0 || position.y > gameActivity.canvasHeight) // balls has exceeded top or bottom bounds
             {
-                if (!gameActivity.soloGame) // if multiplayer
+                if (!gameActivity.soloGame) // if multi-player
                 {
                     if (position.y < 0) // balls has reached top
                     {
                         gameActivity.life++;
-                        gameActivity.popup.add(new Popup(position, Popup.Type.SCOREUP, gameActivity.extraLifeStrings.length));
+                        gameActivity.popups.add(new Popup(position, Popup.Type.SCOREUP, gameActivity.extraLifeStrings.length));
                         GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.LIFE_UP, 1);
                     }
 
                     else // balls has reached bottom
                     {
                         gameActivity.life--;
-                        gameActivity.popup.add(new Popup(position, Popup.Type.LOSELIFE, gameActivity.lostLifeStrings.length));
+                        gameActivity.popups.add(new Popup(position, Popup.Type.LOSELIFE, gameActivity.lostLifeStrings.length));
 
                         GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.DOWN, 1);
                     }
 
                     if (superMode)
-                        gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.LARGE_WAVE));
+                    {
+                        gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.LARGE_WAVE));
+                    }
                     else
-                        gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.MEDIUM_WAVE));
+                    {
+                        gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.MEDIUM_WAVE));
+                    }
 
                     gameActivity.doShake(100);
                     alive = false;
@@ -208,13 +235,17 @@ final class Ball implements Runnable
                         gameActivity.life--;
 
                         if (superMode)
-                            gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.LARGE_WAVE));
+                        {
+                            gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.LARGE_WAVE));
+                        }
                         else
-                            gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.MEDIUM_WAVE));
+                        {
+                            gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.MEDIUM_WAVE));
+                        }
 
                         superMode = false;
                         GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.DOWN, 1);
-                        gameActivity.popup.add(new Popup(position, Popup.Type.LOSELIFE, gameActivity.lostLifeStrings.length));
+                        gameActivity.popups.add(new Popup(position, Popup.Type.LOSELIFE, gameActivity.lostLifeStrings.length));
                         gameActivity.doShake(100);
                         alive = false;
                     }
@@ -240,14 +271,14 @@ final class Ball implements Runnable
             if (speed == 11 && !superMode) // make super mode
             {
                 GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.DING, 1);
-                gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.MEDIUM_WAVE));
+                gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.MEDIUM_WAVE));
                 superMode = true;
             }
 
             if (superMode) // draw super mode animation
             {
                 gameActivity.trail.add(new Trail(prevPosition, position));
-                gameActivity.shockwave.add(new Shockwave(position, Shockwave.Type.EXTRA_SMALL_WAVE));
+                gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.EXTRA_SMALL_WAVE));
             }
 
             try
@@ -272,6 +303,6 @@ final class Ball implements Runnable
             Log.e("Ball", e.toString());
         }
 
-        gameActivity.ball.remove(this); // remove this dead balls
+        gameActivity.balls.remove(this); // remove this dead balls
     }
 }

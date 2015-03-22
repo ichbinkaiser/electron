@@ -1,46 +1,50 @@
 package ichbinkaiser.electron;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import ichbinkaiser.electron.GameActivity.MyDraw;
+import ichbinkaiser.electron.GameActivity.GameScreen;
 
 final class GameSurfaceThread extends Thread
 {
-    GameActivity gameactivity;
-    SurfaceHolder myholder;
-    MyDraw mydraw;
+    GameActivity gameActivity;
+    SurfaceHolder surfaceHolder;
+    GameScreen gameScreen;
 
-    public GameSurfaceThread(GameActivity gameactivity, SurfaceHolder holder, MyDraw drawmain)
+    public GameSurfaceThread(GameActivity gameActivity, SurfaceHolder holder, GameScreen gameScreen)
     {
-        this.gameactivity = gameactivity;
+        this.gameActivity = gameActivity;
         setName("SurfaceView");
-        myholder = holder;
-        mydraw = drawmain;
+        surfaceHolder = holder;
+        this.gameScreen = gameScreen;
         start();
     }
 
+    @SuppressLint("WrongCall")
     public void run()
     {
         Canvas canvas = null;
-        while (gameactivity.running)
+        while (gameActivity.running)
         {
             try
             {
-                canvas = myholder.lockCanvas(null);
-                mydraw.onDraw(canvas);
+                canvas = surfaceHolder.lockCanvas(null);
+                gameScreen.onDraw(canvas);
             }
 
             catch (NullPointerException e)
             {
-                Log.e(this.gameactivity.getLocalClassName(), e.toString());
+                Log.e(this.gameActivity.getLocalClassName(), e.toString());
             }
 
             finally
             {
                 if (canvas != null)
-                    myholder.unlockCanvasAndPost(canvas);
+                {
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
             }
         }
     }

@@ -11,19 +11,19 @@ final class AI implements Runnable
     ArrayList<Ball> ball = new ArrayList<>();
     Player user;
     int guardBoxLeft = 0, guardBoxRight = 0, guardBoxBottom = 0, guardBoxTop = 0; // maximum area the AI guards
-    Quadrant quadrant;
+    Quadrant guardQuadrant;
     Point position = new Point(); // AI current location
     Point target = new Point(); // top balls threat
 
-    AI(GameActivity gameactivity, ArrayList<Ball> ball, Player user, Player player, Quadrant quadrant) // constructor for multiplayer
+    AI(GameActivity gameactivity, ArrayList<Ball> balls, Player user, Player player, Quadrant guardQuadrant) // constructor for multiplayer
     {
         this.gameactivity = gameactivity;
-        this.ball = ball;
+        this.ball = balls;
         this.user = user;
-        this.quadrant = quadrant;
+        this.guardQuadrant = guardQuadrant;
         player.position = position;
 
-        switch (quadrant)
+        switch (guardQuadrant)
         {
             case TOPLEFT:
                 guardBoxBottom = gameactivity.canvasHeight / 3;
@@ -48,8 +48,8 @@ final class AI implements Runnable
         this.gameactivity = gameactivity;
         this.ball = ball;
         this.user = user;
-        this.quadrant = Quadrant.TOPLEFT;
-        guardBoxBottom = gameactivity.canvasHeight / 3; // set AI guardline
+        this.guardQuadrant = Quadrant.TOPLEFT;
+        guardBoxBottom = gameactivity.canvasHeight / 3; // set AI guard line
         guardBoxRight = gameactivity.canvasWidth;
         player.position = position;
         start();
@@ -60,52 +60,65 @@ final class AI implements Runnable
         if (gameactivity.portrait) // if two player
         {
             if (ball.bump && ball.position.y < target.y)
+            {
                 target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y - gameactivity.pongHeight / 2); // check for priority target
+            }
         }
 
         else
         {
-            switch (quadrant)
+            switch (guardQuadrant)
             {
                 case TOPLEFT:
                     if (gameactivity.reversePosition)
                     {
                         if (ball.bump && ball.position.y < target.y && ball.position.x > gameactivity.midpoint)
-                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within third quadrant
+                        {
+                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within third guardQuadrant
+                        }
                     }
 
                     else
                     {
                         if (ball.bump && ball.position.y < target.y && ball.position.x < gameactivity.midpoint)
-                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within second quadrant
+                        {
+                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within second guardQuadrant
+                        }
                     }
                     break;
                 case TOPRIGHT:
                     if (gameactivity.reversePosition)
                     {
                         if (ball.bump && ball.position.y < target.y && ball.position.x < gameactivity.midpoint)
-                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within second quadrant
+                        {
+                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within second guardQuadrant
+                        }
                     }
 
                     else
                     {
                         if (ball.bump && ball.position.y < target.y && ball.position.x > gameactivity.midpoint)
-                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within third quadrant
+                        {
+                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y + gameactivity.pongHeight / 2); // check for priority target within third guardQuadrant
+                        }
                     }
                     break;
                 case BOTTOMRIGHT:
-                    if (user.position.x > gameactivity.midpoint) // check which quadrant player is located
+                    if (user.position.x > gameactivity.midpoint) // check which guardQuadrant player is located
                     {
                         if (!ball.bump && ball.position.y > target.y && ball.position.x < gameactivity.midpoint)
-                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y - gameactivity.pongHeight / 2); // check for priority target within fourth quadrant
+                        {
+                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y - gameactivity.pongHeight / 2); // check for priority target within fourth guardQuadrant
+                        }
                     }
 
                     else
                     {
                         if (!ball.bump && ball.position.y > target.y && ball.position.x > gameactivity.midpoint)
-                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y - gameactivity.pongHeight / 2); // check for priority target within first quadrant
+                        {
+                            target.set(ball.position.x - gameactivity.pongWidth / 2, ball.position.y - gameactivity.pongHeight / 2); // check for priority target within first guardQuadrant
+                        }
                     }
-                    break;
             }
         }
     }
@@ -126,10 +139,12 @@ final class AI implements Runnable
             //////////////////////////////// AI ZONING ////////////////////////////
 
             if (gameactivity.portrait)
+            {
                 target.set(gameactivity.midpoint, gameactivity.canvasHeight); // two player logic
+            }
             else
             {
-                switch (quadrant)
+                switch (guardQuadrant)
                 {
                     case TOPLEFT: // if AI0
                         if (!gameactivity.reversePosition) // is not reverse positions
@@ -183,7 +198,9 @@ final class AI implements Runnable
             for (Ball currentball : ball)
             {
                 if (currentball.alive)
+                {
                     targetLogic(currentball); // send to AI targeting logic current balls location
+                }
             }
 
             ///////////////////////////////// AI MOVEMENT /////////////////////////////////////////
@@ -191,42 +208,70 @@ final class AI implements Runnable
             if (position.x < target.x && position.x <= guardBoxRight) // AI move goingRight
             {
                 if (Math.abs(target.x - position.x) > 10) // turbo mode
+                {
                     if (gameactivity.portrait)
+                    {
                         position.x += 5;
+                    }
                     else
+                    {
                         position.x += 8;
+                    }
+                }
                 else
+                {
                     position.x++;
+                }
             }
 
             else if (position.x > target.x && position.x >= guardBoxLeft) // AI move left
             {
                 if (Math.abs(target.x - position.x) > 10)
+                {
                     if (gameactivity.portrait)
+                    {
                         position.x -= 5;
+                    }
                     else
+                    {
                         position.x -= 8;
+                    }
+                }
                 else
+                {
                     position.x--;
+                }
             }
 
             if (position.y < target.y && target.y <= guardBoxBottom) // AI move down
             {
                 if (Math.abs(target.y - position.y) > 10)
+                {
                     position.y += 5;
+                }
                 else
+                {
                     position.y++;
+                }
             }
 
             else if (position.y > target.y && position.y > guardBoxTop) // AI move up
             {
                 if (Math.abs(target.y - position.y) > 10)
+                {
                     if (gameactivity.portrait)
+                    {
                         position.y -= 8;
+                    }
                     else
+                    {
                         position.y -= 5;
+                    }
+                }
                 else
+                {
                     position.y--;
+                }
             }
 
             try

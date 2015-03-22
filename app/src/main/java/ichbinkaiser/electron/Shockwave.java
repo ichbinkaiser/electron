@@ -2,13 +2,13 @@ package ichbinkaiser.electron;
 
 import android.graphics.Point;
 
-final class Shockwave
+final class ShockWave
 {
     Point position = new Point();
     int life; // animation index counter
     Type type;
 
-    Shockwave(Point position, Type type)
+    ShockWave(Point position, Type type)
     {
         switch (type)
         {
@@ -33,12 +33,16 @@ final class Shockwave
     public int getLife()
     {
         if (type == Type.EXTRA_SMALL_WAVE || type == Type.SMALL_WAVE)
+        {
             return life -= 1;
+        }
         else
+        {
             return life -= 4;
+        }
     }
 
-    public enum Type
+    enum Type
     {
         EXTRA_SMALL_WAVE, SMALL_WAVE, MEDIUM_WAVE, LARGE_WAVE
     }

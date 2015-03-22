@@ -4,16 +4,16 @@ import android.graphics.Point;
 
 final class Trail
 {
-    Point startpoint = new Point(); //start point
-    Point endpoint = new Point(); //end point
+    Point startPoint = new Point(); //start point
+    Point endPoint = new Point(); //end point
     int life = 10; // animation index
 
-    Trail(Point startpoint, Point endpoint)
+    Trail(Point startPoint, Point endPoint)
     {
-        this.startpoint.x = startpoint.x;
-        this.startpoint.y = startpoint.y;
-        this.endpoint.x = endpoint.x;
-        this.endpoint.y = endpoint.y;
+        this.startPoint.x = startPoint.x;
+        this.startPoint.y = startPoint.y;
+        this.endPoint.x = endPoint.x;
+        this.endPoint.y = endPoint.y;
     }
 
     int calcSize() // calculate trailer size

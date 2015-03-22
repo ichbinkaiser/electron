@@ -38,12 +38,18 @@ public class MainActivity extends Activity
         balls = (EditText) findViewById(R.id.editText1); // retrieve balls count from user
 
         if (balls.getText().length() > 0)
+        {
             gameIntent.putExtra("BALLS_COUNT", Integer.parseInt(balls.getText().toString()));
+        }
         else
+        {
             gameIntent.putExtra("BALLS_COUNT", -1);
+        }
 
         if (solo.isChecked())
+        {
             gameIntent.putExtra("SOLO_GAME", true);
+        }
 
         startActivity(gameIntent);
     }
