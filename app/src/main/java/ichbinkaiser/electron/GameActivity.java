@@ -149,13 +149,13 @@ public class GameActivity extends Activity
 		switch (playerNumber)
 		{
 			case 1:
-				return AI.Quadrant.TOPLEFT;
+				return AI.Quadrant.TOP_LEFT;
 			case 2:
-				return AI.Quadrant.TOPRIGHT;
+				return AI.Quadrant.TOP_RIGHT;
 			case 3:
-				return AI.Quadrant.BOTTOMRIGHT;
+				return AI.Quadrant.BOTTOM_RIGHT;
 			default:
-				return AI.Quadrant.TOPLEFT;
+				return AI.Quadrant.TOP_LEFT;
 		}
 	}
 

@@ -25,16 +25,16 @@ final class AI implements Runnable
 
 		switch (guardQuadrant)
 		{
-			case TOPLEFT:
+			case TOP_LEFT:
 				guardBoxBottom = gameactivity.canvasHeight / 3;
 				guardBoxRight = gameactivity.midpoint;
 				break;
-			case TOPRIGHT:
+			case TOP_RIGHT:
 				guardBoxBottom = gameactivity.canvasHeight / 3;
 				guardBoxLeft = gameactivity.midpoint;
 				guardBoxRight = gameactivity.canvasWidth;
 				break;
-			case BOTTOMRIGHT:
+			case BOTTOM_RIGHT:
 				guardBoxTop = gameactivity.canvasHeight - gameactivity.canvasHeight / 3;
 				guardBoxBottom = gameactivity.canvasHeight;
 				guardBoxLeft = gameactivity.midpoint;
@@ -48,7 +48,7 @@ final class AI implements Runnable
 		this.gameactivity = gameactivity;
 		this.balls = balls;
 		this.user = user;
-		this.guardQuadrant = Quadrant.TOPLEFT;
+		this.guardQuadrant = Quadrant.TOP_LEFT;
 		guardBoxBottom = gameactivity.canvasHeight / 3; // set AI guard line
 		guardBoxRight = gameactivity.canvasWidth;
 		player.position = position;
@@ -69,7 +69,7 @@ final class AI implements Runnable
 		{
 			switch (guardQuadrant)
 			{
-				case TOPLEFT:
+				case TOP_LEFT:
 					if (gameactivity.reversePosition)
 					{
 						if (ball.bump && ball.position.y < target.y && ball.position.x > gameactivity.midpoint)
@@ -86,7 +86,7 @@ final class AI implements Runnable
 						}
 					}
 					break;
-				case TOPRIGHT:
+				case TOP_RIGHT:
 					if (gameactivity.reversePosition)
 					{
 						if (ball.bump && ball.position.y < target.y && ball.position.x < gameactivity.midpoint)
@@ -103,7 +103,7 @@ final class AI implements Runnable
 						}
 					}
 					break;
-				case BOTTOMRIGHT:
+				case BOTTOM_RIGHT:
 					if (user.position.x > gameactivity.midpoint) // check which guardQuadrant playerCount is located
 					{
 						if (!ball.bump && ball.position.y > target.y && ball.position.x < gameactivity.midpoint)
@@ -146,7 +146,7 @@ final class AI implements Runnable
 			{
 				switch (guardQuadrant)
 				{
-					case TOPLEFT: // if AI0
+					case TOP_LEFT: // if AI0
 						if (!gameactivity.reversePosition) // is not reverse positions
 						{
 							target.set(gameactivity.midpoint / 2, gameactivity.canvasHeight);
@@ -162,7 +162,7 @@ final class AI implements Runnable
 						}
 						break;
 
-					case TOPRIGHT: // if AI1
+					case TOP_RIGHT: // if AI1
 						if (gameactivity.reversePosition)
 						{
 							target.set(gameactivity.midpoint / 2, gameactivity.canvasHeight);
@@ -178,7 +178,7 @@ final class AI implements Runnable
 						}
 						break;
 
-					case BOTTOMRIGHT: // if AI2
+					case BOTTOM_RIGHT: // if AI2
 						if (user.position.x > gameactivity.midpoint)
 						{
 							target.set(gameactivity.midpoint - gameactivity.midpoint / 2, 0);
@@ -289,6 +289,6 @@ final class AI implements Runnable
 
 	enum Quadrant
 	{
-		TOPLEFT, TOPRIGHT, BOTTOMRIGHT
+		TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT
 	}
 }

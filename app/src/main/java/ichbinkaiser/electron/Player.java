@@ -28,7 +28,7 @@ final class Player implements Runnable
 	{
 		////////////// PLAYER MOVEMENT TRACKING ///////////////
 
-		int tspeedX, tspeedY; // speed placeholder
+		int tSpeedX, tSpeedY; // speed placeholder
 		while (gameactivity.running)
 		{
 			if (position.x != previousPosition.x)
@@ -40,13 +40,13 @@ final class Player implements Runnable
 
 			try // get playerCount velocity
 			{
-				tspeedX = previousPosition.x;
-				tspeedY = previousPosition.y;
+				tSpeedX = previousPosition.x;
+				tSpeedY = previousPosition.y;
 				Thread.sleep(10);
-				tspeedX -= position.x;
-				tspeedY -= position.y;
-				speedX = Math.abs(tspeedX);
-				speedY = Math.abs(tspeedY);
+				tSpeedX -= position.x;
+				tSpeedY -= position.y;
+				speedX = Math.abs(tSpeedX);
+				speedY = Math.abs(tSpeedY);
 			}
 
 			catch (InterruptedException e)
