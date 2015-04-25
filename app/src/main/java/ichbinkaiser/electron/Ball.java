@@ -256,14 +256,14 @@ final class Ball implements Runnable
 			{
 				angle = rnd.nextInt(speed);
 				goingLeft = true;
-				GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POPWALL, 1);
+				GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP_WALL, 1);
 			}
 
 			if (position.x > gameActivity.canvasWidth) // balls has reached right wall
 			{
 				angle = rnd.nextInt(speed);
 				goingLeft = false;
-				GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POPWALL, 1);
+				GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP_WALL, 1);
 			}
 
 			/////////// SUPER MODE CONTROLS //////////////
