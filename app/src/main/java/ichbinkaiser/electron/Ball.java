@@ -73,20 +73,20 @@ final class Ball implements Runnable
 		{
 			////////////////////////////////////// BALL TO PLAYER COLLISION DETECTION ////////////////////////////////
 
-			for (Player player : players)
+			for (int playerCounter = 0; playerCounter < players.length; playerCounter++)
 			{
-				if (player == players[0] || player == players[3]) // bottom playerCount
+				if (playerCounter == 0 || playerCounter == 3) // bottom playerCount
 				{
-					if (position.y >= player.position.y && position.y <= player.position.y + gameActivity.pongHeight && position.x >= player.position.x && position.x <= player.position.x + gameActivity.pongWidth && !bump) // bottom playerCount to balls collision detection
+					if (position.y >= players[playerCounter].position.y && position.y <= players[playerCounter].position.y + gameActivity.pongHeight && position.x >= players[playerCounter].position.x && position.x <= players[playerCounter].position.x + gameActivity.pongWidth && !bump) // bottom playerCount to balls collision detection
 					{
 						angle = rnd.nextInt(speed);
 						bump = true;
 						hits++;
 						gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.EXTRA_SMALL_WAVE));
 
-						goingLeft = (player.goingRight);
+						goingLeft = (players[playerCounter].goingRight);
 
-						if (player == players[0]) // if human players
+						if (playerCounter == 0) // if human players
 						{
 							gameActivity.gameScore = +(1 + speed / 11);
 							gameActivity.doShake(40);
@@ -105,14 +105,14 @@ final class Ball implements Runnable
 							speed += 3;
 						}
 
-						if (speedBonusX < player.speedX / 10)
+						if (speedBonusX < players[playerCounter].speedX / 10)
 						{
-							speedBonusX = (player.speedX / 20); // get balls speed bonus from directional velocity of playerCount
+							speedBonusX = (players[playerCounter].speedX / 20); // get balls speed bonus from directional velocity of playerCount
 						}
 
-						if (speedBonusY < player.speedY / 10)
+						if (speedBonusY < players[playerCounter].speedY / 10)
 						{
-							speedBonusY = player.speedY / 20;
+							speedBonusY = players[playerCounter].speedY / 20;
 						}
 
 						if (gameActivity.soloGame)
@@ -124,7 +124,7 @@ final class Ball implements Runnable
 
 				else // top playerCount
 				{
-					if (position.y >= player.position.y && position.y <= player.position.y + gameActivity.pongHeight && position.x >= player.position.x && position.x <= player.position.x + gameActivity.pongWidth && bump) // top playerCount to balls collision detection
+					if (position.y >= players[playerCounter].position.y && position.y <= players[playerCounter].position.y + gameActivity.pongHeight && position.x >= players[playerCounter].position.x && position.x <= players[playerCounter].position.x + gameActivity.pongWidth && bump) // top playerCount to balls collision detection
 					{
 						angle = rnd.nextInt(speed);
 						bump = false;

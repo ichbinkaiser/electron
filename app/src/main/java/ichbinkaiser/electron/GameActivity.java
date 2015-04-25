@@ -434,26 +434,26 @@ public class GameActivity extends Activity
 				canvas.drawLine(0, centerLine - 5, canvasWidth, centerLine - 5, centerLinePaint);
 			}
 
-			for (Player player : players) // draw playerCount
+			for (int playerCounter = 0; playerCounter < players.length; playerCounter++) // draw playerCount
 			{
-				if (player == players[0] || player == players[3]) // if playerCount is a bottom playerCount
+				if (playerCounter == 0 || playerCounter == 3) // if playerCount is a bottom playerCount
 				{
-					if (player.goingRight)
+					if (players[playerCounter].goingRight)
 					{
-						canvas.drawBitmap(pongBottomRight, player.position.x, player.position.y, null);
+						canvas.drawBitmap(pongBottomRight, players[playerCounter].position.x, players[playerCounter].position.y, null);
 					}
 					else
 					{
-						canvas.drawBitmap(pongBottomLeft, player.position.x, player.position.y, null);
+						canvas.drawBitmap(pongBottomLeft, players[playerCounter].position.x, players[playerCounter].position.y, null);
 					}
 				}
-				else if (player.goingRight)
+				else if (players[playerCounter].goingRight)
 				{
-					canvas.drawBitmap(pongTopRight, player.position.x, player.position.y, null);
+					canvas.drawBitmap(pongTopRight, players[playerCounter].position.x, players[playerCounter].position.y, null);
 				}
 				else
 				{
-					canvas.drawBitmap(pongTopLeft, player.position.x, player.position.y, null);
+					canvas.drawBitmap(pongTopLeft, players[playerCounter].position.x, players[playerCounter].position.y, null);
 				}
 			}
 
