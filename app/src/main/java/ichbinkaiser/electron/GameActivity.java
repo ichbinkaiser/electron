@@ -26,7 +26,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameActivity extends Activity
 {
@@ -44,10 +45,10 @@ public class GameActivity extends Activity
 	int hitCounter = 0; // balls hit counter for AI friend guard zone switch
 	int playerCount; // number of players
 	int pongWidth, pongHeight; // ping pong bitmap height
-	ArrayList<Popup> popups = new ArrayList<>(); // popups messages array list
-	ArrayList<ShockWave> shockWaves = new ArrayList<>(); // shockWaves animation array list
-	ArrayList<Trail> trail = new ArrayList<>(); // trail animation array list
-	ArrayList<Ball> balls = new ArrayList<>();
+	List<Popup> popups = new CopyOnWriteArrayList<>(); // popups messages array list
+	List<ShockWave> shockWaves = new CopyOnWriteArrayList<>(); // shockWaves animation array list
+	List<Trail> trail = new CopyOnWriteArrayList<>(); // trail animation array list
+	List<Ball> balls = new CopyOnWriteArrayList<>();
 	GameSurfaceThread gameSurfaceThread;
 	SurfaceHolder surfaceHolder;
 	Player[] players; // set Players array
@@ -58,9 +59,9 @@ public class GameActivity extends Activity
 	String[] zoomStrings = new String[]{"ZOOM!", "WOOSH!", "SUPER MODE!", "ZOOMBA!", "WARPSPEED!"};
 
 	@Override
-	public void onCreate(Bundle savedinstancestate)
+	public void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedinstancestate);
+		super.onCreate(savedInstanceState);
 		Log.i(getLocalClassName(), "Activity started");
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -143,21 +144,6 @@ public class GameActivity extends Activity
 		v.vibrate(time);
 	}
 
-	private AI.Quadrant getEnumFromPlayerNumber(int playerNumber)
-	{
-		switch (playerNumber)
-		{
-			case 1:
-				return AI.Quadrant.TOP_LEFT;
-			case 2:
-				return AI.Quadrant.TOP_RIGHT;
-			case 3:
-				return AI.Quadrant.BOTTOM_RIGHT;
-			default:
-				return AI.Quadrant.TOP_LEFT;
-		}
-	}
-
 	private class GlobalThread implements Runnable
 	{
 		GlobalThread()
@@ -178,6 +164,7 @@ public class GameActivity extends Activity
 			{
 				if (life < 0) // game over condition
 				{
+					running = false;
 					SOUNDMANAGER.playSound(SoundManager.Sound.RESTART, 1);
 					showScore();
 				}
@@ -345,7 +332,7 @@ public class GameActivity extends Activity
 
 					else if (!soloGame)
 					{
-						ai[playerCounter - 1] = new AI(GameActivity.this, balls, players[0], players[playerCounter], getEnumFromPlayerNumber(playerCounter - 1));
+						ai[playerCounter - 1] = new AI(GameActivity.this, balls, players[0], players[playerCounter], AI.Quadrant.values()[playerCounter - 1]);
 						switch (playerCounter)
 						{
 							case 1:

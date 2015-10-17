@@ -3,13 +3,14 @@ package ichbinkaiser.electron;
 import android.graphics.Point;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 final class Ball implements Runnable
 {
 	GameActivity gameActivity;
-	ArrayList<Ball> balls = new ArrayList<>();
+	List<Ball> balls = new CopyOnWriteArrayList<>();
 	Player[] players;
 
 	int hits = 0, speed = 5;
@@ -27,7 +28,7 @@ final class Ball implements Runnable
 	int speedBonusX = 0, speedBonusY = 0;
 	int spawnWave = 0;
 
-	Ball(GameActivity gameActivity, ArrayList<Ball> balls, Player[] players, boolean newBall)
+	Ball(GameActivity gameActivity, List<Ball> balls, Player[] players, boolean newBall)
 	{
 		this.gameActivity = gameActivity;
 		this.balls = balls;
