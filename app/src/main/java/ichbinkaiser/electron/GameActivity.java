@@ -16,7 +16,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -390,7 +389,7 @@ public class GameActivity extends Activity
 		}
 
 		@Override
-		public boolean onTouchEvent(@NonNull MotionEvent event)
+		public boolean onTouchEvent(MotionEvent event)
 		{
 			if (event.getAction() == MotionEvent.ACTION_MOVE)
 			{
@@ -408,8 +407,7 @@ public class GameActivity extends Activity
 			return true;
 		}
 
-		@Override
-		protected void onDraw(Canvas canvas)
+		protected void screenDraw(Canvas canvas)
 		{
 			canvas.drawBitmap(back, 0, 0, null);
 			centerLinePaint.setColor(Color.argb(centerLineCounter, 255, 255, 255));

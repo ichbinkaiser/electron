@@ -1,6 +1,5 @@
 package ichbinkaiser.electron;
 
-import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -22,7 +21,6 @@ final class GameSurfaceThread extends Thread
 		start();
 	}
 
-	@SuppressLint("WrongCall")
 	public void run()
 	{
 		Canvas canvas = null;
@@ -31,7 +29,7 @@ final class GameSurfaceThread extends Thread
 			try
 			{
 				canvas = surfaceHolder.lockCanvas(null);
-				gameScreen.onDraw(canvas);
+				gameScreen.screenDraw(canvas);
 			}
 
 			catch (NullPointerException e)
