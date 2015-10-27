@@ -51,7 +51,7 @@ final class Ball implements Runnable
 		if (newBall)
 		{
 			spawnWave = 5;
-			GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.SPAWN, 1);
+			GameActivity.SOUNDMANAGER.playSound(Sound.SPAWN, 1);
 		}
 		start();
 	}
@@ -83,7 +83,7 @@ final class Ball implements Runnable
 						angle = rnd.nextInt(speed);
 						bump = true;
 						hits++;
-						gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.EXTRA_SMALL_WAVE));
+						gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.EXTRA_SMALL_WAVE));
 
 						goingLeft = (players[playerCounter].goingRight);
 
@@ -97,7 +97,7 @@ final class Ball implements Runnable
 								balls.add(new Ball(gameActivity, balls, players, true));
 							}
 						}
-						GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP, 1);
+						GameActivity.SOUNDMANAGER.playSound(Sound.POP, 1);
 
 						gameActivity.hitCounter++;
 
@@ -118,7 +118,7 @@ final class Ball implements Runnable
 
 						if (gameActivity.soloGame)
 						{
-							gameActivity.popups.add(new Popup(position, Popup.Type.SOLO, 0)); // popups text in score++ in solo mode
+							gameActivity.popups.add(new Popup(position, PopupType.SOLO, 0)); // popups text in score++ in solo mode
 						}
 					}
 				}
@@ -131,8 +131,8 @@ final class Ball implements Runnable
 						bump = false;
 						hits++;
 
-						gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.EXTRA_SMALL_WAVE));
-						GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP, 1);
+						gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.EXTRA_SMALL_WAVE));
+						GameActivity.SOUNDMANAGER.playSound(Sound.POP, 1);
 
 						if (hits > 0 && hits % 3 == 0)
 						{
@@ -151,7 +151,7 @@ final class Ball implements Runnable
 					if (checkCollision(ball.position)) // balls collision detected
 					{
 						angle = rnd.nextInt(speed);
-						GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.HIT, 1);
+						GameActivity.SOUNDMANAGER.playSound(Sound.HIT, 1);
 						goingLeft = !goingLeft && !ball.goingLeft; // go right if bumped balls is going left
 						ball.goingLeft = !goingLeft; // reverse direction of the bumped balls
 						ball.collided = true;
@@ -185,7 +185,7 @@ final class Ball implements Runnable
 
 			if (spawnWave > 0) // spawn_wave animation
 			{
-				gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.SMALL_WAVE));
+				gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.SMALL_WAVE));
 				spawnWave--;
 			}
 
@@ -198,25 +198,25 @@ final class Ball implements Runnable
 					if (position.y < 0) // balls has reached top
 					{
 						gameActivity.life++;
-						gameActivity.popups.add(new Popup(position, Popup.Type.SCORE_UP, gameActivity.extraLifeStrings.length));
-						GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.LIFE_UP, 1);
+						gameActivity.popups.add(new Popup(position, PopupType.SCORE_UP, gameActivity.extraLifeStrings.length));
+						GameActivity.SOUNDMANAGER.playSound(Sound.LIFE_UP, 1);
 					}
 
 					else // balls has reached bottom
 					{
 						gameActivity.life--;
-						gameActivity.popups.add(new Popup(position, Popup.Type.LOSE_LIFE, gameActivity.lostLifeStrings.length));
+						gameActivity.popups.add(new Popup(position, PopupType.LOSE_LIFE, gameActivity.lostLifeStrings.length));
 
-						GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.DOWN, 1);
+						GameActivity.SOUNDMANAGER.playSound(Sound.DOWN, 1);
 					}
 
 					if (superMode)
 					{
-						gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.LARGE_WAVE));
+						gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.LARGE_WAVE));
 					}
 					else
 					{
-						gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.MEDIUM_WAVE));
+						gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.MEDIUM_WAVE));
 					}
 
 					gameActivity.doShake(100);
@@ -237,16 +237,16 @@ final class Ball implements Runnable
 
 						if (superMode)
 						{
-							gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.LARGE_WAVE));
+							gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.LARGE_WAVE));
 						}
 						else
 						{
-							gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.MEDIUM_WAVE));
+							gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.MEDIUM_WAVE));
 						}
 
 						superMode = false;
-						GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.DOWN, 1);
-						gameActivity.popups.add(new Popup(position, Popup.Type.LOSE_LIFE, gameActivity.lostLifeStrings.length));
+						GameActivity.SOUNDMANAGER.playSound(Sound.DOWN, 1);
+						gameActivity.popups.add(new Popup(position, PopupType.LOSE_LIFE, gameActivity.lostLifeStrings.length));
 						gameActivity.doShake(100);
 						alive = false;
 					}
@@ -257,29 +257,29 @@ final class Ball implements Runnable
 			{
 				angle = rnd.nextInt(speed);
 				goingLeft = true;
-				GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP_WALL, 1);
+				GameActivity.SOUNDMANAGER.playSound(Sound.POP_WALL, 1);
 			}
 
 			if (position.x > gameActivity.canvasWidth) // balls has reached right wall
 			{
 				angle = rnd.nextInt(speed);
 				goingLeft = false;
-				GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.POP_WALL, 1);
+				GameActivity.SOUNDMANAGER.playSound(Sound.POP_WALL, 1);
 			}
 
 			/////////// SUPER MODE CONTROLS //////////////
 
 			if (speed == 11 && !superMode) // make super mode
 			{
-				GameActivity.SOUNDMANAGER.playSound(SoundManager.Sound.DING, 1);
-				gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.MEDIUM_WAVE));
+				GameActivity.SOUNDMANAGER.playSound(Sound.DING, 1);
+				gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.MEDIUM_WAVE));
 				superMode = true;
 			}
 
 			if (superMode) // draw super mode animation
 			{
 				gameActivity.trail.add(new Trail(prevPosition, position));
-				gameActivity.shockWaves.add(new ShockWave(position, ShockWave.Type.EXTRA_SMALL_WAVE));
+				gameActivity.shockWaves.add(new ShockWave(position, ShockWaveType.EXTRA_SMALL_WAVE));
 			}
 
 			try

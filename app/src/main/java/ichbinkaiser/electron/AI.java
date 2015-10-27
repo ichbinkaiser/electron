@@ -281,8 +281,4 @@ final class AI implements Runnable
 		}
 	}
 
-	enum Quadrant
-	{
-		TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT
-	}
 }

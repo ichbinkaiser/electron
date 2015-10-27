@@ -165,7 +165,7 @@ public class GameActivity extends Activity
 				if (life < 0) // game over condition
 				{
 					running = false;
-					SOUNDMANAGER.playSound(SoundManager.Sound.RESTART, 1);
+					SOUNDMANAGER.playSound(Sound.RESTART, 1);
 					showScore();
 				}
 
@@ -332,7 +332,7 @@ public class GameActivity extends Activity
 
 					else if (!soloGame)
 					{
-						ai[playerCounter - 1] = new AI(GameActivity.this, balls, players[0], players[playerCounter], AI.Quadrant.values()[playerCounter - 1]);
+						ai[playerCounter - 1] = new AI(GameActivity.this, balls, players[0], players[playerCounter], Quadrant.values()[playerCounter - 1]);
 						switch (playerCounter)
 						{
 							case 1:
