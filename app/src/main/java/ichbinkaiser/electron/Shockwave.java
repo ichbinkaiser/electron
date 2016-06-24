@@ -6,9 +6,9 @@ final class ShockWave
 {
 	Point position = new Point();
 	int life; // animation index counter
-	Type type;
+	ShockWaveType type;
 
-	ShockWave(Point position, Type type)
+	ShockWave(Point position, ShockWaveType type)
 	{
 		switch (type)
 		{
@@ -32,7 +32,7 @@ final class ShockWave
 
 	public int getLife()
 	{
-		if (type == Type.EXTRA_SMALL_WAVE || type == Type.SMALL_WAVE)
+		if (type == ShockWaveType.EXTRA_SMALL_WAVE || type == ShockWaveType.SMALL_WAVE)
 		{
 			return life -= 1;
 		}
@@ -42,8 +42,4 @@ final class ShockWave
 		}
 	}
 
-	enum Type
-	{
-		EXTRA_SMALL_WAVE, SMALL_WAVE, MEDIUM_WAVE, LARGE_WAVE
-	}
 }

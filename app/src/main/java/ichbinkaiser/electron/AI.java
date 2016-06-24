@@ -280,5 +280,4 @@ final class AI implements Runnable
 			}
 		}
 	}
-
 }
