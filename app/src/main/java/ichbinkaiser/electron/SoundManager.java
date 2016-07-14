@@ -14,7 +14,7 @@ final class SoundManager
 	SparseIntArray sounds;
 	AudioManager audioManager;
 	Context context;
-	int[] soundLibrary = new int[]{R.raw.pop, R.raw.lifeup, R.raw.ding, R.raw.popwall, R.raw.down, R.raw.hit, R.raw.restart, R.raw.spawn};
+	int[] soundLibrary = {R.raw.pop, R.raw.lifeup, R.raw.ding, R.raw.popwall, R.raw.down, R.raw.hit, R.raw.restart, R.raw.spawn};
 
 	void initSounds(Context context)
 	{

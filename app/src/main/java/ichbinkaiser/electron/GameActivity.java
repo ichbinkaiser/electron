@@ -155,6 +155,7 @@ public class GameActivity extends Activity
 		{
 			Thread thread = new Thread(this);
 			thread.setName("GlobalThread");
+			thread.setDaemon(true);
 			thread.start();
 		}
 
