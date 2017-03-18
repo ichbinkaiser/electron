@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView1"
@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/main_text"
-        tools:context=".MainActivity"/>
+        tools:context=".activity.MainActivity" />
 
     <EditText
         android:id="@+id/editText1"
@@ -22,7 +22,7 @@
         android:ems="10"
         android:inputType="number">
 
-        <requestFocus/>
+        <requestFocus />
     </EditText>
 
     <Button
@@ -33,7 +33,7 @@
         android:layout_alignLeft="@+id/editText1"
         android:layout_marginLeft="19dp"
         android:onClick="startGame"
-        android:text="@string/start"/>
+        android:text="@string/start" />
 
     <CheckBox
         android:id="@+id/checkBox1"
@@ -42,6 +42,6 @@
         android:layout_alignBaseline="@+id/button1"
         android:layout_alignBottom="@+id/button1"
         android:layout_toRightOf="@+id/button1"
-        android:text="@string/solo_play"/>
+        android:text="@string/solo_play" />
 
 </RelativeLayout>
