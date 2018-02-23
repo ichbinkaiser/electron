@@ -43,45 +43,64 @@ import lombok.Getter;
 
 public class GameActivity extends Activity {
 
-    @Getter
-    private static String score;
     protected PowerManager.WakeLock wakelock;
     private GameSurfaceThread gameSurfaceThread;
     private SurfaceHolder surfaceHolder;
+
     @Getter
     private int canvasHeight, canvasWidth, midpoint, centerLine;
+
     @Getter
     private int life = 50, gameScore = 0;
+
     @Getter
     private int ballCount = 3;
+
     @Getter
     private boolean running = true; // game running
+
     @Getter
     private int ballSize;
+
     @Getter
     private boolean portrait; // screen orientation
+
     @Getter
     private boolean reversePosition = false; // AI reverse position in doubles mode
+
     @Getter
     private boolean soloGame = false; // is solo game
+
     @Getter
     private int hitCounter = 0; // balls hit counter for AI friend guard zone switch
+
     @Getter
     private int playerCount; // number of players
+
     @Getter
     private int pongWidth, pongHeight; // ping pong bitmap height
+
     @Getter
     private List<Popup> popups = new CopyOnWriteArrayList<>(); // popups messages array list
+
     @Getter
     private List<ShockWave> shockWaves = new CopyOnWriteArrayList<>(); // shockWaves animation array list
+
     @Getter
     private List<Trail> trail = new CopyOnWriteArrayList<>(); // trail animation array list
+
     @Getter
     private List<Ball> balls = new CopyOnWriteArrayList<>();
+
     @Getter
     private Player[] players; // set Players array
+
     @Getter
     private AI[] ai; // set AI array
+
+    @Getter
+    private static String score;
+
     @Getter
     private String[] extraLifeStrings = new String[]{
             "OH YEAH!",
