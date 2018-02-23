@@ -338,13 +338,24 @@ public class GameActivity extends Activity {
 
             if (portrait) // create normal background
             {
-                back = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.back), canvasWidth, canvasHeight, true);
+                back = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
+                        R.drawable.back),
+                        canvasWidth,
+                        canvasHeight,
+                        true);
+
                 Log.i(getLocalClassName(), "Portrait background created");
             } else // create rotated background
             {
                 Matrix matrix = new Matrix();
                 matrix.postRotate(90);
-                back = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.back), 0, 0, BitmapFactory.decodeResource(getResources(), R.drawable.back).getWidth(), BitmapFactory.decodeResource(getResources(), R.drawable.back).getHeight(), matrix, true);
+                back = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(),
+                        R.drawable.back), 0, 0,
+                        BitmapFactory.decodeResource(getResources(),
+                                R.drawable.back).getWidth(),
+                        BitmapFactory.decodeResource(getResources(),
+                                R.drawable.back).getHeight(), matrix, true);
+
                 back = Bitmap.createScaledBitmap(back, canvasWidth, canvasHeight, true);
                 Log.i(getLocalClassName(), "Landscape background created");
             }
@@ -353,14 +364,23 @@ public class GameActivity extends Activity {
             Log.i(getLocalClassName(), "pong bottom goingRight created");
             Matrix matrix = new Matrix();
             matrix.preScale(-1.0f, 1.0f);
-            pongBottomLeft = Bitmap.createBitmap(pongBottomRight, 0, 0, pongBottomRight.getWidth(), pongBottomRight.getHeight(), matrix, true);
+            pongBottomLeft = Bitmap.createBitmap(pongBottomRight, 0, 0,
+                    pongBottomRight.getWidth(),
+                    pongBottomRight.getHeight(),
+                    matrix, true);
             Log.i(getLocalClassName(), "pong bottom left created");
 
             Matrix ai_matrix = new Matrix(); // create flipped clone of playerCount image for computer
             ai_matrix.preScale(1.0f, -1.0f);
-            pongTopRight = Bitmap.createBitmap(pongBottomRight, 0, 0, pongBottomRight.getWidth(), pongBottomRight.getHeight(), ai_matrix, true);
+            pongTopRight = Bitmap.createBitmap(pongBottomRight, 0, 0,
+                    pongBottomRight.getWidth(),
+                    pongBottomRight.getHeight(),
+                    ai_matrix, true);
             Log.i(getLocalClassName(), "pong top goingRight created");
-            pongTopLeft = Bitmap.createBitmap(pongBottomLeft, 0, 0, pongBottomRight.getWidth(), pongBottomRight.getHeight(), ai_matrix, true);
+            pongTopLeft = Bitmap.createBitmap(pongBottomLeft, 0, 0,
+                    pongBottomRight.getWidth(),
+                    pongBottomRight.getHeight(),
+                    ai_matrix, true);
             Log.i(getLocalClassName(), "pong top left created");
 
             Typeface myType = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
@@ -422,18 +442,26 @@ public class GameActivity extends Activity {
                             players[playerCounter].getPosition().set(midpoint - midpoint / 2, canvasHeight - canvasHeight / 3);
                         }
                     } else if (!soloGame) {
-                        ai[playerCounter - 1] = new AI(GameActivity.this, balls, players[0], players[playerCounter], Quadrant.values()[playerCounter - 1]);
+                        ai[playerCounter - 1] = new AI(GameActivity.this,
+                                balls,
+                                players[0],
+                                players[playerCounter],
+                                Quadrant.values()[playerCounter - 1]);
+
                         switch (playerCounter) {
                             case 1:
-                                players[playerCounter].getPosition().set(midpoint / 2, canvasHeight / 3); // set AI start location to 2nd guardQuadrant
+                                players[playerCounter].getPosition().set(midpoint / 2,
+                                        canvasHeight / 3); // set AI start location to 2nd guardQuadrant
                                 Log.i(getLocalClassName(), "AI0 initialized");
                                 break;
                             case 2:
-                                players[playerCounter].getPosition().set(midpoint + midpoint + 2, canvasHeight / 3); // set AI start location to 3rd guardQuadrant
+                                players[playerCounter].getPosition().set(midpoint + midpoint + 2,
+                                        canvasHeight / 3); // set AI start location to 3rd guardQuadrant
                                 Log.i(getLocalClassName(), "AI1 initialized");
                                 break;
                             case 3:
-                                players[playerCounter].getPosition().set(midpoint + midpoint + 2, canvasHeight - canvasHeight / 3); // set AI start location to 4th guardQuadrant
+                                players[playerCounter].getPosition().set(midpoint + midpoint + 2,
+                                        canvasHeight - canvasHeight / 3); // set AI start location to 4th guardQuadrant
                                 Log.i(getLocalClassName(), "AI2 initialized");
                         }
                     }
@@ -502,14 +530,22 @@ public class GameActivity extends Activity {
                 if (playerCounter == 0 || playerCounter == 3) // if playerCount is a bottom playerCount
                 {
                     if (players[playerCounter].isGoingRight()) {
-                        canvas.drawBitmap(pongBottomRight, players[playerCounter].getPosition().x, players[playerCounter].getPosition().y, null);
+                        canvas.drawBitmap(pongBottomRight,
+                                players[playerCounter].getPosition().x,
+                                players[playerCounter].getPosition().y, null);
                     } else {
-                        canvas.drawBitmap(pongBottomLeft, players[playerCounter].getPosition().x, players[playerCounter].getPosition().y, null);
+                        canvas.drawBitmap(pongBottomLeft,
+                                players[playerCounter].getPosition().x,
+                                players[playerCounter].getPosition().y, null);
                     }
                 } else if (players[playerCounter].isGoingRight()) {
-                    canvas.drawBitmap(pongTopRight, players[playerCounter].getPosition().x, players[playerCounter].getPosition().y, null);
+                    canvas.drawBitmap(pongTopRight,
+                            players[playerCounter].getPosition().x,
+                            players[playerCounter].getPosition().y, null);
                 } else {
-                    canvas.drawBitmap(pongTopLeft, players[playerCounter].getPosition().x, players[playerCounter].getPosition().y, null);
+                    canvas.drawBitmap(pongTopLeft,
+                            players[playerCounter].getPosition().x,
+                            players[playerCounter].getPosition().y, null);
                 }
             }
 
@@ -526,7 +562,11 @@ public class GameActivity extends Activity {
                 if (currentTrail.getLife() > 0) {
                     ballTrail.setStrokeWidth(ballSize - currentTrail.calcSize());
                     ballTrail.setColor(Color.argb(currentTrail.getLife() * 25, 255, 255, 255));
-                    canvas.drawLine(currentTrail.getStartPoint().x, currentTrail.getStartPoint().y, currentTrail.getEndPoint().x, currentTrail.getEndPoint().y, ballTrail);
+                    canvas.drawLine(currentTrail.getStartPoint().x,
+                            currentTrail.getStartPoint().y,
+                            currentTrail.getEndPoint().x,
+                            currentTrail.getEndPoint().y,
+                            ballTrail);
                     currentTrail.decrementLife();
                 } else {
                     trail.remove(index);
@@ -543,22 +583,30 @@ public class GameActivity extends Activity {
                         case EXTRA_SMALL_WAVE:
                             circleStrokePaint.setColor(Color.argb(currentShockWaveLife * 23, 255, 255, 255));
                             circleStrokePaint.setStrokeWidth(1);
-                            canvas.drawCircle(currentShockWave.getPosition().x, currentShockWave.getPosition().y, 11 - currentShockWaveLife, circleStrokePaint);
+                            canvas.drawCircle(currentShockWave.getPosition().x,
+                                    currentShockWave.getPosition().y, 11 - currentShockWaveLife,
+                                    circleStrokePaint);
                             break;
                         case SMALL_WAVE:
                             circleStrokePaint.setColor(Color.argb(currentShockWaveLife * 12, 255, 255, 255));
                             circleStrokePaint.setStrokeWidth(2);
-                            canvas.drawCircle(currentShockWave.getPosition().x, currentShockWave.getPosition().y, 21 - currentShockWaveLife, circleStrokePaint);
+                            canvas.drawCircle(currentShockWave.getPosition().x,
+                                    currentShockWave.getPosition().y, 21 - currentShockWaveLife,
+                                    circleStrokePaint);
                             break;
                         case MEDIUM_WAVE:
                             circleStrokePaint.setColor(Color.argb(currentShockWaveLife * 2, 255, 255, 255));
                             circleStrokePaint.setStrokeWidth(1);
-                            canvas.drawCircle(currentShockWave.getPosition().x, currentShockWave.getPosition().y, 128 - currentShockWaveLife, circleStrokePaint);
+                            canvas.drawCircle(currentShockWave.getPosition().x,
+                                    currentShockWave.getPosition().y, 128 - currentShockWaveLife,
+                                    circleStrokePaint);
                             break;
                         case LARGE_WAVE:
                             circleStrokePaint.setColor(Color.argb(currentShockWaveLife, 255, 255, 255));
                             circleStrokePaint.setStrokeWidth(1);
-                            canvas.drawCircle(currentShockWave.getPosition().x, currentShockWave.getPosition().y, 252 - currentShockWaveLife, circleStrokePaint);
+                            canvas.drawCircle(currentShockWave.getPosition().x,
+                                    currentShockWave.getPosition().y, 252 - currentShockWaveLife,
+                                    circleStrokePaint);
                     }
                 } else {
                     shockWaves.remove(index);
@@ -575,13 +623,16 @@ public class GameActivity extends Activity {
 
                     switch (currentPopup.getType()) {
                         case SCORE_UP:
-                            canvas.drawText(extraLifeStrings[currentPopup.getIndex()], currentPopup.getPosition().x, currentPopup.getPosition().y - popupLife, popupText);
+                            canvas.drawText(extraLifeStrings[currentPopup.getIndex()],
+                                    currentPopup.getPosition().x, currentPopup.getPosition().y - popupLife, popupText);
                             break;
                         case LOSE_LIFE:
-                            canvas.drawText(lostLifeStrings[currentPopup.getIndex()], currentPopup.getPosition().x, currentPopup.getPosition().y + popupLife, popupText);
+                            canvas.drawText(lostLifeStrings[currentPopup.getIndex()],
+                                    currentPopup.getPosition().x, currentPopup.getPosition().y + popupLife, popupText);
                             break;
                         case SOLO:
-                            canvas.drawText("+1", currentPopup.getPosition().x, currentPopup.getPosition().y + currentPopup.getLife(), popupText);
+                            canvas.drawText("+1", currentPopup.getPosition().x,
+                                    currentPopup.getPosition().y + currentPopup.getLife(), popupText);
                     }
                 } else {
                     popups.remove(index);
@@ -589,7 +640,16 @@ public class GameActivity extends Activity {
             }
 
             if (life > 0) {
-                canvas.drawText("Ball Count: " + Integer.toString(balls.size()) + " " + "Score: " + Integer.toString(gameScore) + "  " + "Extra Life: " + Integer.toString(life), 10, canvasHeight - 10, scoreText);
+                StringBuffer drawText = new StringBuffer();
+                drawText.append("Ball Count: ")
+                        .append(Integer.toString(balls.size()))
+                        .append(" ")
+                        .append("Score: ")
+                        .append(Integer.toString(gameScore))
+                        .append(" ")
+                        .append("Extra Life: ")
+                        .append(Integer.toString(life));
+                canvas.drawText(drawText.toString(), 10, canvasHeight - 10, scoreText);
             }
         }
     }
