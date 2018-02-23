@@ -39,33 +39,99 @@ import ichbinkaiser.electron.entity.Quadrant;
 import ichbinkaiser.electron.entity.ShockWave;
 import ichbinkaiser.electron.entity.Sound;
 import ichbinkaiser.electron.entity.Trail;
+import lombok.Getter;
 
 public class GameActivity extends Activity {
-    static String score;
+    @Getter
+    private static String score;
     protected PowerManager.WakeLock wakelock;
-    int canvasHeight, canvasWidth, midpoint, centerLine;
-    int life = 50, gameScore = 0;
-    int ballCount = 3;
-    boolean running = true; // game running
-    int ballSize;
-    boolean portrait; // screen orientation
-    boolean reversePosition = false; // AI reverse position in doubles mode
-    boolean soloGame = false; // is solo game
-    int hitCounter = 0; // balls hit counter for AI friend guard zone switch
-    int playerCount; // number of players
-    int pongWidth, pongHeight; // ping pong bitmap height
-    List<Popup> popups = new CopyOnWriteArrayList<>(); // popups messages array list
-    List<ShockWave> shockWaves = new CopyOnWriteArrayList<>(); // shockWaves animation array list
-    List<Trail> trail = new CopyOnWriteArrayList<>(); // trail animation array list
-    List<Ball> balls = new CopyOnWriteArrayList<>();
-    GameSurfaceThread gameSurfaceThread;
-    SurfaceHolder surfaceHolder;
-    Player[] players; // set Players array
-    AI[] ai; // set AI array
-    String[] extraLifeStrings = new String[]{"OH YEAH!", "WOHOOO!", "YEAH BABY!", "WOOOT!", "AWESOME!", "COOL!", "GREAT!", "YEAH!!", "WAY TO GO!", "YOU ROCK!"};
-    String[] lostLifeStrings = new String[]{"YOU SUCK!", "LOSER!", "GO HOME!", "REALLY?!", "WIMP!", "SUCKER!", "HAHAHA!", "YOU MAD?!", "DIE!", "BOOM!"};
-    String[] bumpStrings = new String[]{"BUMP!", "TOINK!", "BOINK!", "BAM!", "WABAM!"};
-    String[] zoomStrings = new String[]{"ZOOM!", "WOOSH!", "SUPER MODE!", "ZOOMBA!", "WARPSPEED!"};
+    private GameSurfaceThread gameSurfaceThread;
+    private SurfaceHolder surfaceHolder;
+    @Getter
+    private int canvasHeight, canvasWidth, midpoint, centerLine;
+    @Getter
+    private int life = 50, gameScore = 0;
+    @Getter
+    private int ballCount = 3;
+    @Getter
+    private boolean running = true; // game running
+    @Getter
+    private int ballSize;
+    @Getter
+    private boolean portrait; // screen orientation
+    @Getter
+    private boolean reversePosition = false; // AI reverse position in doubles mode
+    @Getter
+    private boolean soloGame = false; // is solo game
+    @Getter
+    private int hitCounter = 0; // balls hit counter for AI friend guard zone switch
+    @Getter
+    private int playerCount; // number of players
+    @Getter
+    private int pongWidth, pongHeight; // ping pong bitmap height
+    @Getter
+    private List<Popup> popups = new CopyOnWriteArrayList<>(); // popups messages array list
+
+    @Getter
+    private List<ShockWave> shockWaves = new CopyOnWriteArrayList<>(); // shockWaves animation array list
+
+    @Getter
+    private List<Trail> trail = new CopyOnWriteArrayList<>(); // trail animation array list
+
+    @Getter
+    private List<Ball> balls = new CopyOnWriteArrayList<>();
+
+    @Getter
+    private Player[] players; // set Players array
+
+    @Getter
+    private AI[] ai; // set AI array
+
+    @Getter
+    private String[] extraLifeStrings = new String[]{
+            "OH YEAH!",
+            "WOHOOO!",
+            "YEAH BABY!",
+            "WOOOT!",
+            "AWESOME!",
+            "COOL!",
+            "GREAT!",
+            "YEAH!!",
+            "WAY TO GO!",
+            "YOU ROCK!"
+    };
+
+    @Getter
+    private String[] lostLifeStrings = new String[]{
+            "YOU SUCK!",
+            "LOSER!",
+            "GO HOME!",
+            "REALLY?!",
+            "WIMP!",
+            "SUCKER!",
+            "HAHAHA!",
+            "YOU MAD?!",
+            "DIE!",
+            "BOOM!"
+    };
+
+    @Getter
+    private String[] bumpStrings = new String[]{
+            "BUMP!",
+            "TOINK!",
+            "BOINK!",
+            "BAM!",
+            "WABAM!"
+    };
+
+    @Getter
+    private String[] zoomStrings = new String[]{
+            "ZOOM!",
+            "WOOSH!",
+            "SUPER MODE!",
+            "ZOOMBA!",
+            "WARPSPEED!"
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,18 +206,6 @@ public class GameActivity extends Activity {
         v.vibrate(time);
     }
 
-    public int getCanvasHeight() {
-        return canvasHeight;
-    }
-
-    public int getCanvasWidth() {
-        return canvasWidth;
-    }
-
-    public int getMidpoint() {
-        return midpoint;
-    }
-
     public void adjustLife(boolean isIncrement) {
         if (isIncrement)
             life++;
@@ -159,72 +213,12 @@ public class GameActivity extends Activity {
             life--;
     }
 
-    public int getGameScore() {
-        return gameScore;
-    }
-
     public void addGameScore(int value) {
         gameScore += value;
     }
 
-    public int getBallCount() {
-        return ballCount;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public int getBallSize() {
-        return ballSize;
-    }
-
-    public boolean isPortrait() {
-        return portrait;
-    }
-
-    public boolean isReversePosition() {
-        return reversePosition;
-    }
-
-    public boolean isSoloGame() {
-        return soloGame;
-    }
-
     public void incrementHitCounter() {
         hitCounter++;
-    }
-
-    public int getPongWidth() {
-        return pongWidth;
-    }
-
-    public int getPongHeight() {
-        return pongHeight;
-    }
-
-    public List<Popup> getPopups() {
-        return popups;
-    }
-
-    public List<ShockWave> getShockWaves() {
-        return shockWaves;
-    }
-
-    public List<Trail> getTrail() {
-        return trail;
-    }
-
-    public List<Ball> getBalls() {
-        return balls;
-    }
-
-    public String[] getExtraLifeStrings() {
-        return extraLifeStrings;
-    }
-
-    public String[] getLostLifeStrings() {
-        return lostLifeStrings;
     }
 
     static final class GameSurfaceThread extends Thread {
