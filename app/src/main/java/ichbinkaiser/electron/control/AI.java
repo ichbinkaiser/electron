@@ -8,15 +8,25 @@ import java.util.List;
 import ichbinkaiser.electron.activity.GameActivity;
 import ichbinkaiser.electron.entity.Ball;
 import ichbinkaiser.electron.entity.Quadrant;
+import lombok.Getter;
 
 public class AI implements Runnable {
-    GameActivity gameActivity;
-    List<Ball> balls;
-    Player user;
-    int guardBoxLeft = 0, guardBoxRight = 0, guardBoxBottom = 0, guardBoxTop = 0; // maximum area the AI guards
-    Quadrant guardQuadrant;
-    Point position = new Point(); // AI current location
-    Point target = new Point(); // top balls threat
+
+    @Getter
+    private int guardBoxLeft = 0, guardBoxRight = 0, guardBoxBottom = 0, guardBoxTop = 0; // maximum area the AI guards
+
+    @Getter
+    private Quadrant guardQuadrant;
+
+    @Getter
+    private Point position = new Point(); // AI current location
+
+    @Getter
+    private Point target = new Point(); // top balls threat
+
+    private List<Ball> balls;
+    private Player user;
+    private GameActivity gameActivity;
 
     public AI(GameActivity gameActivity, List<Ball> balls, Player user, Player player, Quadrant guardQuadrant) // constructor for multiplayer
     {
@@ -24,7 +34,7 @@ public class AI implements Runnable {
         this.balls = balls;
         this.user = user;
         this.guardQuadrant = guardQuadrant;
-        player.position = position;
+        player.setPosition(position);
 
         switch (guardQuadrant) {
             case TOP_LEFT:
@@ -53,7 +63,7 @@ public class AI implements Runnable {
         this.guardQuadrant = Quadrant.TOP_LEFT;
         guardBoxBottom = gameActivity.getCanvasHeight() / 3; // set AI guard line
         guardBoxRight = gameActivity.getCanvasWidth();
-        player.position = position;
+        player.setPosition(position);
         start();
     }
 
@@ -88,7 +98,7 @@ public class AI implements Runnable {
                     }
                     break;
                 case BOTTOM_RIGHT:
-                    if (user.position.x > gameActivity.getMidpoint()) // check which guardQuadrant playerCount is located
+                    if (user.getPosition().x > gameActivity.getMidpoint()) // check which guardQuadrant playerCount is located
                     {
                         if (!ball.isBump() && ball.getPosition().y > target.y && ball.getPosition().x < gameActivity.getMidpoint()) {
                             target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within fourth guardQuadrant
@@ -144,7 +154,7 @@ public class AI implements Runnable {
                         break;
 
                     case BOTTOM_RIGHT: // if AI2
-                        if (user.position.x > gameActivity.getMidpoint()) {
+                        if (user.getPosition().x > gameActivity.getMidpoint()) {
                             target.set(gameActivity.getMidpoint() - gameActivity.getMidpoint() / 2, 0);
                             guardBoxLeft = 0;
                             guardBoxRight = gameActivity.getMidpoint();
