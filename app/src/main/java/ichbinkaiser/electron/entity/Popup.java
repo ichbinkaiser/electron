@@ -8,7 +8,7 @@ public class Popup {
     Point position = new Point();
     int life = 255; // animation index life
     PopupType type; // popups message type
-    int index = 0; // text message index
+    int index; // text message index
 
     Popup(Point position, PopupType type, int indexSize) {
         Random rnd = new Random();

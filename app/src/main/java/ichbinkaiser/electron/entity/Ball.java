@@ -10,28 +10,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import ichbinkaiser.electron.activity.GameActivity;
 import ichbinkaiser.electron.control.Player;
 import ichbinkaiser.electron.core.SoundManager;
+import lombok.Getter;
 
 public class Ball implements Runnable {
-    GameActivity gameActivity;
-    List<Ball> balls = new CopyOnWriteArrayList<>();
-    Player[] players;
 
-    int hits = 0, speed = 5;
-    Point position = new Point();
-    Point prevPosition = new Point(); // previous position
-    Random rnd = new Random();
+    @Getter
+    private Point position = new Point();
 
-    boolean bump; // is hit by playerCount
-    boolean goingLeft; // is going left
-    boolean collided; // has collided
-    boolean superMode = false; // balls in super mode
-    boolean alive = true; //
+    @Getter
+    private boolean bump; // is hit by playerCount
 
-    int angle = rnd.nextInt(5); // angle of balls bounce
-    int speedBonusX = 0, speedBonusY = 0;
-    int spawnWave = 0;
+    @Getter
+    private boolean alive = true;
 
-    SoundManager soundManager = SoundManager.getInstance();
+    private GameActivity gameActivity;
+    private List<Ball> balls;
+    private Player[] players;
+    private Point prevPosition = new Point(); // previous position
+    private Random rnd = new Random();
+    private SoundManager soundManager = SoundManager.getInstance();
+
+    private boolean goingLeft; // is going left
+    private boolean collided; // has collided
+    private boolean superMode = false; // balls in super mode
+    private int angle = rnd.nextInt(5); // angle of balls bounce
+    private int speedBonusX = 0, speedBonusY = 0;
+    private int spawnWave = 0;
+    private int hits = 0, speed = 5;
 
     public Ball(GameActivity gameActivity, List<Ball> balls, Player[] players, boolean newBall) {
         this.gameActivity = gameActivity;
