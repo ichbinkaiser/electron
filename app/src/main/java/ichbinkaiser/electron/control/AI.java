@@ -13,7 +13,10 @@ import lombok.Getter;
 public class AI implements Runnable {
 
     @Getter
-    private int guardBoxLeft = 0, guardBoxRight = 0, guardBoxBottom = 0, guardBoxTop = 0; // maximum area the AI guards
+    private int guardBoxLeft = 0,
+            guardBoxRight = 0,
+            guardBoxBottom = 0,
+            guardBoxTop = 0; // maximum area the AI guards
 
     @Getter
     private Quadrant guardQuadrant;
@@ -28,7 +31,11 @@ public class AI implements Runnable {
     private Player user;
     private GameActivity gameActivity;
 
-    public AI(GameActivity gameActivity, List<Ball> balls, Player user, Player player, Quadrant guardQuadrant) // constructor for multiplayer
+    public AI(GameActivity gameActivity,
+              List<Ball> balls,
+              Player user,
+              Player player,
+              Quadrant guardQuadrant) // constructor for multiplayer
     {
         this.gameActivity = gameActivity;
         this.balls = balls;
@@ -55,7 +62,10 @@ public class AI implements Runnable {
         start();
     }
 
-    public AI(GameActivity gameActivity, List<Ball> balls, Player user, Player player) // constructor for single playerCount
+    public AI(GameActivity gameActivity,
+              List<Ball> balls,
+              Player user,
+              Player player) // constructor for single playerCount
     {
         this.gameActivity = gameActivity;
         this.balls = balls;
@@ -71,41 +81,54 @@ public class AI implements Runnable {
         if (gameActivity.isPortrait()) // if two playerCount
         {
             if (ball.isBump() && ball.getPosition().y < target.y) {
-                target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target
+                target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2,
+                        ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target
             }
         } else {
             switch (guardQuadrant) {
                 case TOP_LEFT:
                     if (gameActivity.isReversePosition()) {
-                        if (ball.isBump() && ball.getPosition().y < target.y && ball.getPosition().x > gameActivity.getMidpoint()) {
-                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within third guardQuadrant
+                        if (ball.isBump() && ball.getPosition().y < target.y
+                                && ball.getPosition().x > gameActivity.getMidpoint()) {
+                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2,
+                                    ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within third guardQuadrant
                         }
                     } else {
-                        if (ball.isBump() && ball.getPosition().y < target.y && ball.getPosition().x < gameActivity.getMidpoint()) {
-                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within second guardQuadrant
+                        if (ball.isBump() && ball.getPosition().y < target.y
+                                && ball.getPosition().x < gameActivity.getMidpoint()) {
+                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2,
+                                    ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within second guardQuadrant
                         }
                     }
                     break;
                 case TOP_RIGHT:
                     if (gameActivity.isReversePosition()) {
-                        if (ball.isBump() && ball.getPosition().y < target.y && ball.getPosition().x < gameActivity.getMidpoint()) {
-                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within second guardQuadrant
+                        if (ball.isBump() && ball.getPosition().y < target.y
+                                && ball.getPosition().x < gameActivity.getMidpoint()) {
+                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2,
+                                    ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within second guardQuadrant
                         }
                     } else {
-                        if (ball.isBump() && ball.getPosition().y < target.y && ball.getPosition().x > gameActivity.getMidpoint()) {
-                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within third guardQuadrant
+                        if (ball.isBump() && ball.getPosition().y < target.y
+                                && ball.getPosition().x > gameActivity.getMidpoint()) {
+                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2,
+                                    ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within third guardQuadrant
                         }
                     }
                     break;
                 case BOTTOM_RIGHT:
                     if (user.getPosition().x > gameActivity.getMidpoint()) // check which guardQuadrant playerCount is located
                     {
-                        if (!ball.isBump() && ball.getPosition().y > target.y && ball.getPosition().x < gameActivity.getMidpoint()) {
-                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within fourth guardQuadrant
+                        if (!ball.isBump() && ball.getPosition().y > target.y
+                                && ball.getPosition().x < gameActivity.getMidpoint()) {
+                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2,
+                                    ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within fourth guardQuadrant
                         }
                     } else {
-                        if (!ball.isBump() && ball.getPosition().y > target.y && ball.getPosition().x > gameActivity.getMidpoint()) {
-                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2, ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within first guardQuadrant
+                        if (!ball.isBump() && ball.getPosition().y > target.y
+                                && ball.getPosition().x > gameActivity.getMidpoint()) {
+                            target.set(ball.getPosition().x - gameActivity.getPongWidth() / 2,
+                                    ball.getPosition().y - gameActivity.getPongHeight() / 2); // check for priority target within first guardQuadrant
                         }
                     }
             }
@@ -126,16 +149,19 @@ public class AI implements Runnable {
             //////////////////////////////// AI ZONING ////////////////////////////
 
             if (gameActivity.isPortrait()) {
-                target.set(gameActivity.getMidpoint(), gameActivity.getCanvasHeight()); // two playerCount logic
+                target.set(gameActivity.getMidpoint(),
+                        gameActivity.getCanvasHeight()); // two playerCount logic
             } else {
                 switch (guardQuadrant) {
                     case TOP_LEFT: // if AI0
                         if (!gameActivity.isReversePosition()) { // is not reverse positions
-                            target.set(gameActivity.getMidpoint() / 2, gameActivity.getCanvasHeight());
+                            target.set(gameActivity.getMidpoint() / 2,
+                                    gameActivity.getCanvasHeight());
                             guardBoxLeft = 0;
                             guardBoxRight = gameActivity.getMidpoint();
                         } else {
-                            target.set(gameActivity.getMidpoint() + gameActivity.getMidpoint() / 2, gameActivity.getCanvasHeight());
+                            target.set(gameActivity.getMidpoint() + gameActivity.getMidpoint() / 2,
+                                    gameActivity.getCanvasHeight());
                             guardBoxLeft = gameActivity.getMidpoint();
                             guardBoxRight = gameActivity.getCanvasWidth();
                         }
@@ -143,11 +169,13 @@ public class AI implements Runnable {
 
                     case TOP_RIGHT: // if AI1
                         if (gameActivity.isReversePosition()) {
-                            target.set(gameActivity.getMidpoint() / 2, gameActivity.getCanvasHeight());
+                            target.set(gameActivity.getMidpoint() / 2,
+                                    gameActivity.getCanvasHeight());
                             guardBoxLeft = 0;
                             guardBoxRight = gameActivity.getMidpoint();
                         } else {
-                            target.set(gameActivity.getMidpoint() + gameActivity.getMidpoint() / 2, gameActivity.getCanvasHeight());
+                            target.set(gameActivity.getMidpoint() + gameActivity.getMidpoint() / 2,
+                                    gameActivity.getCanvasHeight());
                             guardBoxLeft = gameActivity.getMidpoint();
                             guardBoxRight = gameActivity.getCanvasWidth();
                         }
@@ -155,7 +183,7 @@ public class AI implements Runnable {
 
                     case BOTTOM_RIGHT: // if AI2
                         if (user.getPosition().x > gameActivity.getMidpoint()) {
-                            target.set(gameActivity.getMidpoint() - gameActivity.getMidpoint() / 2, 0);
+                            target.set(gameActivity.getMidpoint() - gameActivity.getMidpoint() / 2,0);
                             guardBoxLeft = 0;
                             guardBoxRight = gameActivity.getMidpoint();
                         } else {

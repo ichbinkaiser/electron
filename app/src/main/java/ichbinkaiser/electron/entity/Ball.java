@@ -278,16 +278,4 @@ public class Ball implements Runnable {
 
         gameActivity.getBalls().remove(this); // remove this dead balls
     }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public boolean isBump() {
-        return bump;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
 }
