@@ -68,7 +68,7 @@ public class SoundManager {
                 1f);
     }
 
-    public SoundManager getInstance() {
+    public static SoundManager getInstance() {
         return INSTANCE;
     }
 
