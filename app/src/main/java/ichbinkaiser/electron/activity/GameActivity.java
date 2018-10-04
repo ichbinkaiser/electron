@@ -156,7 +156,7 @@ public class GameActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        this.wakelock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
+        this.wakelock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "electron:app");
         this.wakelock.acquire();
 
         ballCount = getIntent().getIntExtra("BALLS_COUNT", -1); // retrieve balls count from main activity

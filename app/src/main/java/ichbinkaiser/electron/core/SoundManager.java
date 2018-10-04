@@ -27,13 +27,11 @@ public class SoundManager {
     @Getter
     private int soundsLoaded = 0;
 
-    @Getter
-    private static final SoundManager INSTANCE = new SoundManager();
-
     private SoundPool soundpool;
     private SparseIntArray sounds;
     private AudioManager audioManager;
     private Context context;
+    private static final SoundManager INSTANCE = new SoundManager();
 
     private SoundManager() {
         // This is to be instantiated internally
@@ -68,6 +66,10 @@ public class SoundManager {
                 1,
                 0,
                 1f);
+    }
+
+    public SoundManager getInstance() {
+        return INSTANCE;
     }
 
     public void doCleanup() {
